@@ -1,0 +1,51 @@
+
+
+config.txt
+
+# Общие файлы для .NET проектов
+[Bb]in
+[Oo]bj
+.user
+.rsuser
+.suo
+.userosscache
+.sln.docstates
+
+# Visual Studio
+.vs
+.VC.db
+.VC.VC.opendb
+.pdb
+
+# Сборочные файлы
+.exe
+.dll
+.app
+.log
+
+# NuGet
+.nupkg
+.snupkg
+packages
+.nuget
+
+# Пакетные менеджеры
+node_modules
+.njsproj
+.log
+
+# Резервные файлы
+.bak
+.swp
+.orig
+.tmp
+.temp
+
+# Публикация
+publish
+out
+
+# Конфигурационные файлы
+#appsettings.json
+#app.config
+#web.config
