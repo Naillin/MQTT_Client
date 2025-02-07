@@ -12,6 +12,7 @@
 [Bb]in/
 [Oo]bj/
 [Pp]ackages/ # Исключить пакеты NuGet (восстанавливаются автоматически)
+packages/
 x64/
 x86/
 build/
