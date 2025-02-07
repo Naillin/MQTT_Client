@@ -137,13 +137,13 @@
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="green" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\bin\Debug\Res\green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Res\green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="iconMQTT" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\bin\Debug\Res\iconMQTT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Res\iconMQTT.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="iconMQTT_ico" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\bin\Debug\Res\iconMQTT_ico.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Res\iconMQTT_ico.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="notification_string" xml:space="preserve">
     <value>Message recived: </value>
@@ -155,7 +155,7 @@
     <value>Reconnecting</value>
   </data>
   <data name="red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\bin\Debug\Res\red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Res\red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="subscribe_topic_string" xml:space="preserve">
     <value>Subscribe on topic: </value>
