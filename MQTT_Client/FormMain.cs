@@ -1,4 +1,7 @@
-﻿using System;
+﻿using IniParser;
+using IniParser.Model;
+using NLog;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -11,11 +14,47 @@ namespace MQTT_Client
 {
 	public partial class FormMain : Form
 	{
+		private static readonly string moduleName = "FormMain";
+		private static readonly Logger baseLogger = LogManager.GetLogger(moduleName);
+		private static readonly LoggerManager logger = new LoggerManager(baseLogger, moduleName);
+
 		private string ADDRESS = "127.0.0.1";
 		private int PORT = 1883;
 		private string LOGIN = "user_login";
 		private string PASSWORD = "user_password";
-		private const string filePathConfig = "config.txt";
+		private const string filePathConfig = "config.ini";
+
+		string configTextDefault = string.Empty;
+		public void initConfig()
+		{
+			FileIniDataParser parser = new FileIniDataParser();
+
+			if (File.Exists(filePathConfig))
+			{
+				IniData data = parser.ReadFile(filePathConfig);
+
+				string[] linesConfig = File.ReadAllLines(filePathConfig);
+				ADDRESS = data["Settings"]["ADDRESS"];
+				PORT = Convert.ToInt32(data["Settings"]["PORT"]);
+				LOGIN = data["Settings"]["LOGIN"];
+				PASSWORD = data["Settings"]["PASSWORD"];
+			}
+			else
+			{
+				IniData data = new IniData();
+				data.Sections.AddSection("Settings");
+				data["Settings"]["ADDRESS"] = ADDRESS;
+				data["Settings"]["PORT"] = PORT.ToString();
+				data["Settings"]["LOGIN"] = LOGIN;
+				data["Settings"]["PASSWORD"] = PASSWORD;
+				parser.WriteFile(filePathConfig, data);
+			}
+
+			configTextDefault = $"ADDRESS={ADDRESS}\r\n" +
+								$"PORT={PORT.ToString()}\r\n" +
+								$"LOGIN={LOGIN}\r\n" +
+								$"PASSWORD={PASSWORD}";
+		}
 
 		public FormMain()
 		{
@@ -26,7 +65,7 @@ namespace MQTT_Client
 			buttonAddTopic.Focus();
 		}
 
-		MqttReceiver mqttReceiver;
+		MqttBrokerClient mqttBrokerClient;
 		string textBuffer = string.Empty;
 		private void FormMain_Load(object sender, EventArgs e)
 		{
@@ -38,22 +77,35 @@ namespace MQTT_Client
 			{
 				initConfig();
 
-				mqttReceiver = new MqttReceiver(IPAddress.Parse(ADDRESS), PORT, LOGIN, PASSWORD);
-				//mqttReceiver.Topic = TOPIC;
-				mqttReceiver.Start();
+				mqttBrokerClient = new MqttBrokerClient(IPAddress.Parse(ADDRESS), PORT, LOGIN, PASSWORD);
+				//mqttBrokerClient.Topic = TOPIC;
+				mqttBrokerClient.Connect();
 
-				mqttReceiver.OnMessageReceived += (message) =>
+				mqttBrokerClient.MessageReceived += (senderMQTT, eMQTT) =>
 				{
-					string prePostString = Properties.Resources.notification_string + message;
+					string prePostString = Properties.Resources.notification_string + $"Topic: [{eMQTT.Topic}] Message: [{eMQTT.Payload}]";
 					lock (textBuffer) { textBuffer = textBuffer + prePostString + Environment.NewLine; }
 
 					if (textBoxInfo.InvokeRequired)
 					{
-						lock (textBoxInfo) { textBoxInfo.Invoke(new Action(() => textBoxInfo.Text = textBuffer)); }
+						lock (textBoxInfo)
+						{
+							textBoxInfo.Invoke(new Action(() =>
+							{
+								textBoxInfo.Text = textBuffer;
+								textBoxInfo.SelectionStart = textBoxInfo.Text.Length;
+								textBoxInfo.ScrollToCaret();
+							})); 
+						}
 					}
 					else
 					{
-						lock (textBoxInfo) { textBoxInfo.Text = textBuffer; }
+						lock (textBoxInfo)
+						{
+							textBoxInfo.Text = textBuffer;
+							textBoxInfo.SelectionStart = textBoxInfo.Text.Length;
+							textBoxInfo.ScrollToCaret();
+						}
 					}
 				};
 
@@ -66,37 +118,17 @@ namespace MQTT_Client
 			}
 		}
 
-		public void initConfig()
-		{
-			if (File.Exists(filePathConfig))
-			{
-				string[] linesConfig = File.ReadAllLines(filePathConfig);
-				ADDRESS = linesConfig[0].Split('=')[1];
-				PORT = Convert.ToInt32(linesConfig[1].Split('=')[1]);
-				LOGIN = linesConfig[2].Split('=')[1];
-				PASSWORD = linesConfig[3].Split('=')[1];
-			}
-			else
-			{
-				string configTextDefault = $"ADDRESS=127.0.0.1\r\n" +
-										   $"PORT=1883\r\n" +
-										   $"LOGIN=user_login\r\n" +
-										   $"PASSWORD=user_password";
-				File.WriteAllText(filePathConfig, configTextDefault);
-			}
-		}
-
 		private void buttonSend_Click(object sender, EventArgs e)
 		{
 			string message = textBoxMessage.Text;
 			textBoxMessage.Text = string.Empty;
-			if (mqttReceiver.IsConnected())
+			if (mqttBrokerClient.IsConnected())
 			{
-				if (!string.IsNullOrEmpty(message))
+				if (!string.IsNullOrEmpty(message) && !string.IsNullOrEmpty(currentTopic))
 				{
 					try
 					{
-						mqttReceiver.Publish(message);
+						mqttBrokerClient.Publish(currentTopic, message);
 					}
 					catch (Exception ex)
 					{
@@ -115,6 +147,14 @@ namespace MQTT_Client
 			}
 		}
 
+		private void textBoxMessage_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter)
+			{
+				buttonSend_Click(sender, e);
+			}
+		}
+
 		private void buttonAddTopic_Click(object sender, EventArgs e)
 		{
 			InputBox inputBox = new InputBox(Properties.Resources.topic_adding_string, Properties.Resources.enter_topic_name_string);
@@ -123,7 +163,7 @@ namespace MQTT_Client
 				string topic = inputBox.InputText;
 				if (!string.IsNullOrEmpty(topic))
 				{
-					TreeViewFiller(ref treeView1, topic);
+					TreeViewFiller(ref treeViewMain, topic);
 				}
 			}
 		}
@@ -167,20 +207,25 @@ namespace MQTT_Client
 			}
 		}
 
-		private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+		private string currentTopic = string.Empty;
+		private void treeViewMain_AfterSelect(object sender, TreeViewEventArgs e)
 		{
 			pictureBoxStatus.BackgroundImage = Properties.Resources.red;
 			labelStatus.Text = Properties.Resources.not_connected_string;
 
 			try
 			{
-				TreeNode selectedNode = e.Node;
-				string topic = GetFullPath(selectedNode);
-				mqttReceiver.Topic = topic;
+				if (!string.IsNullOrEmpty(currentTopic))
+				{
+					mqttBrokerClient.Unsubscribe(currentTopic);
+				}
 
-				mqttReceiver.Reconnect();
-				labelTopic.Text = Properties.Resources.topic_string + topic;
-				lock (textBuffer) { textBuffer = textBuffer + Properties.Resources.subscribe_topic_string + topic + Environment.NewLine; }
+				TreeNode selectedNode = e.Node;
+				currentTopic = GetFullPath(selectedNode);
+
+				mqttBrokerClient.Subscribe(currentTopic);
+				labelTopic.Text = Properties.Resources.topic_string + currentTopic;
+				lock (textBuffer) { textBuffer = textBuffer + Properties.Resources.subscribe_topic_string + currentTopic + Environment.NewLine; }
 				lock (textBoxInfo) { textBoxInfo.Text = textBuffer; }
 
 				Thread.Sleep(1000);
@@ -211,7 +256,7 @@ namespace MQTT_Client
 				lock (textBuffer) { textBuffer = textBuffer + Properties.Resources.disconnecting_string + Environment.NewLine; }
 				lock (textBoxInfo) { textBoxInfo.Text = textBuffer; }
 
-				mqttReceiver.Disconnect();
+				mqttBrokerClient.Disconnect();
 				disconnect = true;
 				Thread.Sleep(3000);
 			}
@@ -232,13 +277,15 @@ namespace MQTT_Client
 			{
 				while (!disconnect)
 				{
-					if (mqttReceiver.IsConnected())
+					if (mqttBrokerClient.IsConnected())
 					{
+
 						pictureBoxStatus.Invoke(new Action(() => pictureBoxStatus.BackgroundImage = Properties.Resources.green));
 						labelStatus.Invoke(new Action(() => labelStatus.Text = Properties.Resources.connected_string));
-
 						if (status)
 						{
+							
+
 							lock (textBuffer) { textBuffer = textBuffer + Properties.Resources.connected_string + Environment.NewLine; }
 							lock (textBoxInfo) { textBoxInfo.Invoke(new Action(() => textBoxInfo.Text = textBuffer)); }
 
@@ -256,7 +303,7 @@ namespace MQTT_Client
 							textBuffer = textBuffer + Properties.Resources.reconnect_string + Environment.NewLine;
 						}
 						lock (textBoxInfo) { textBoxInfo.Invoke(new Action(() => textBoxInfo.Text = textBuffer)); }
-						mqttReceiver.Reconnect();
+						//mqttBrokerClient.Connect();
 
 						status = true;
 					}
@@ -271,7 +318,7 @@ namespace MQTT_Client
 			}
 			finally
 			{
-				mqttReceiver.Disconnect();
+				mqttBrokerClient.Disconnect();
 			}
 		}
 	}

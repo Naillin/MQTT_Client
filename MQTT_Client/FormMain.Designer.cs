@@ -34,7 +34,7 @@
 			this.pictureBoxStatus = new System.Windows.Forms.PictureBox();
 			this.labelStatus = new System.Windows.Forms.Label();
 			this.buttonSend = new System.Windows.Forms.Button();
-			this.treeView1 = new System.Windows.Forms.TreeView();
+			this.treeViewMain = new System.Windows.Forms.TreeView();
 			this.textBoxMessage = new System.Windows.Forms.TextBox();
 			this.labelTopic = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
@@ -100,15 +100,15 @@
 			this.buttonSend.UseVisualStyleBackColor = false;
 			this.buttonSend.Click += new System.EventHandler(this.buttonSend_Click);
 			// 
-			// treeView1
+			// treeViewMain
 			// 
-			this.treeView1.BackColor = System.Drawing.Color.OldLace;
-			this.treeView1.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.treeView1.Location = new System.Drawing.Point(12, 43);
-			this.treeView1.Name = "treeView1";
-			this.treeView1.Size = new System.Drawing.Size(254, 495);
-			this.treeView1.TabIndex = 5;
-			this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+			this.treeViewMain.BackColor = System.Drawing.Color.OldLace;
+			this.treeViewMain.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.treeViewMain.Location = new System.Drawing.Point(12, 43);
+			this.treeViewMain.Name = "treeViewMain";
+			this.treeViewMain.Size = new System.Drawing.Size(254, 495);
+			this.treeViewMain.TabIndex = 5;
+			this.treeViewMain.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewMain_AfterSelect);
 			// 
 			// textBoxMessage
 			// 
@@ -119,6 +119,7 @@
 			this.textBoxMessage.Name = "textBoxMessage";
 			this.textBoxMessage.Size = new System.Drawing.Size(566, 28);
 			this.textBoxMessage.TabIndex = 6;
+			this.textBoxMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxMessage_KeyDown);
 			// 
 			// labelTopic
 			// 
@@ -139,7 +140,7 @@
 			this.ClientSize = new System.Drawing.Size(850, 550);
 			this.Controls.Add(this.labelTopic);
 			this.Controls.Add(this.textBoxMessage);
-			this.Controls.Add(this.treeView1);
+			this.Controls.Add(this.treeViewMain);
 			this.Controls.Add(this.buttonSend);
 			this.Controls.Add(this.labelStatus);
 			this.Controls.Add(this.pictureBoxStatus);
@@ -164,7 +165,7 @@
 		private System.Windows.Forms.PictureBox pictureBoxStatus;
 		private System.Windows.Forms.Label labelStatus;
 		private System.Windows.Forms.Button buttonSend;
-		private System.Windows.Forms.TreeView treeView1;
+		private System.Windows.Forms.TreeView treeViewMain;
 		private System.Windows.Forms.TextBox textBoxMessage;
 		private System.Windows.Forms.Label labelTopic;
 	}
