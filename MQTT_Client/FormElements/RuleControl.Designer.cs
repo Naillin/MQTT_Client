@@ -40,9 +40,9 @@
 			// 
 			this.textBoxFirebaseReference.BackColor = System.Drawing.Color.Cornsilk;
 			this.textBoxFirebaseReference.Font = new System.Drawing.Font("Franklin Gothic Medium", 11.25F, System.Drawing.FontStyle.Italic);
-			this.textBoxFirebaseReference.Location = new System.Drawing.Point(3, 49);
+			this.textBoxFirebaseReference.Location = new System.Drawing.Point(3, 48);
 			this.textBoxFirebaseReference.Name = "textBoxFirebaseReference";
-			this.textBoxFirebaseReference.Size = new System.Drawing.Size(202, 25);
+			this.textBoxFirebaseReference.Size = new System.Drawing.Size(350, 25);
 			this.textBoxFirebaseReference.TabIndex = 0;
 			this.textBoxFirebaseReference.TextChanged += new System.EventHandler(this.textBoxFirebaseReference_TextChanged);
 			// 
@@ -51,9 +51,9 @@
 			this.textBoxMQTTtopic.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBoxMQTTtopic.BackColor = System.Drawing.Color.Cornsilk;
 			this.textBoxMQTTtopic.Font = new System.Drawing.Font("Franklin Gothic Medium", 11.25F, System.Drawing.FontStyle.Italic);
-			this.textBoxMQTTtopic.Location = new System.Drawing.Point(242, 49);
+			this.textBoxMQTTtopic.Location = new System.Drawing.Point(465, 48);
 			this.textBoxMQTTtopic.Name = "textBoxMQTTtopic";
-			this.textBoxMQTTtopic.Size = new System.Drawing.Size(202, 25);
+			this.textBoxMQTTtopic.Size = new System.Drawing.Size(350, 25);
 			this.textBoxMQTTtopic.TabIndex = 1;
 			this.textBoxMQTTtopic.TextChanged += new System.EventHandler(this.textBoxMQTTtopic_TextChanged);
 			// 
@@ -62,9 +62,9 @@
 			this.buttonSwitch.BackColor = System.Drawing.Color.Wheat;
 			this.buttonSwitch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.buttonSwitch.Font = new System.Drawing.Font("Franklin Gothic Demi Cond", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.buttonSwitch.Location = new System.Drawing.Point(211, 49);
+			this.buttonSwitch.Location = new System.Drawing.Point(359, 48);
 			this.buttonSwitch.Name = "buttonSwitch";
-			this.buttonSwitch.Size = new System.Drawing.Size(25, 25);
+			this.buttonSwitch.Size = new System.Drawing.Size(100, 25);
 			this.buttonSwitch.TabIndex = 2;
 			this.buttonSwitch.Text = ">";
 			this.buttonSwitch.UseVisualStyleBackColor = false;
@@ -85,7 +85,7 @@
 			this.labelMQTTtopic.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.labelMQTTtopic.AutoSize = true;
 			this.labelMQTTtopic.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.labelMQTTtopic.Location = new System.Drawing.Point(355, 25);
+			this.labelMQTTtopic.Location = new System.Drawing.Point(727, 25);
 			this.labelMQTTtopic.Name = "labelMQTTtopic";
 			this.labelMQTTtopic.Size = new System.Drawing.Size(88, 21);
 			this.labelMQTTtopic.TabIndex = 4;
@@ -97,9 +97,9 @@
 			this.buttonDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.buttonDelete.Font = new System.Drawing.Font("Franklin Gothic Demi", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.buttonDelete.ForeColor = System.Drawing.Color.White;
-			this.buttonDelete.Location = new System.Drawing.Point(211, 3);
+			this.buttonDelete.Location = new System.Drawing.Point(359, 3);
 			this.buttonDelete.Name = "buttonDelete";
-			this.buttonDelete.Size = new System.Drawing.Size(25, 25);
+			this.buttonDelete.Size = new System.Drawing.Size(100, 25);
 			this.buttonDelete.TabIndex = 5;
 			this.buttonDelete.Text = "X";
 			this.buttonDelete.UseVisualStyleBackColor = false;
@@ -117,7 +117,7 @@
 			this.Controls.Add(this.textBoxMQTTtopic);
 			this.Controls.Add(this.textBoxFirebaseReference);
 			this.Name = "RuleControl";
-			this.Size = new System.Drawing.Size(446, 79);
+			this.Size = new System.Drawing.Size(818, 79);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

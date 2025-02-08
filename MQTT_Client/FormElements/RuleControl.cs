@@ -7,7 +7,6 @@ namespace MQTT_Client.FormElements
 	public partial class RuleControl : UserControl
 	{
 		private string _firebaseReference = string.Empty;
-		[JsonProperty("firebase_reference")]
 		public string FirebaseReference
 		{
 			get
@@ -21,7 +20,6 @@ namespace MQTT_Client.FormElements
 			}
 		}
 		private string _MQTT_topic = string.Empty;
-		[JsonProperty("mqtt_topic")]
 		public string MQTT_topic
 		{
 			get
@@ -35,7 +33,6 @@ namespace MQTT_Client.FormElements
 			}
 		}
 		private bool _direction = false;
-		[JsonProperty("direction")]
 		public bool Direction
 		{
 			get

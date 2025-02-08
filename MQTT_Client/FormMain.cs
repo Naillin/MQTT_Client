@@ -12,8 +12,6 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-//КОРОЧЕ НИХРЕНА НЕ РАБОТАЕТ ЭТОТ СУБСКРАЙБ. пока что можно сделать опрашивалку раз в секунду по ключу с помощью GetDataAsync. данные fb старые хранить по <ключ=путь, значение> в словаре.
-//блокировать контейнер в окне рулсов, что бы нельзя было менять направления.
 //элементы контейнера съебываются в ебеня
 namespace MQTT_Client
 {
@@ -35,6 +33,7 @@ namespace MQTT_Client
 		string configTextDefault = string.Empty;
 		public void initConfig()
 		{
+	
 			FileIniDataParser parser = new FileIniDataParser();
 
 			if (File.Exists(filePathConfig))
@@ -72,10 +71,15 @@ namespace MQTT_Client
 			if (File.Exists(filePathRules))
 			{
 				string json = File.ReadAllText(filePathRules);
-				List<RuleControl> jsonRules = JsonConvert.DeserializeObject<List<RuleControl>>(json);
-				foreach (RuleControl rule in jsonRules)
+				List<RuleUnit> jsonRules = JsonConvert.DeserializeObject<List<RuleUnit>>(json);
+				foreach (RuleUnit rule in jsonRules)
 				{
 					AddRule(rule.FirebaseReference, rule.MQTT_topic, rule.Direction);
+				}
+
+				if (ruleControls.Count != 0)
+				{
+					buttonStartStop.Enabled = true;
 				}
 			}
 		}
@@ -120,6 +124,7 @@ namespace MQTT_Client
 
 		private MqttBrokerClient mqttBrokerClient = null;
 		private FirebaseService firebaseService = null;
+		private Dictionary<string, string> subscriptions = new Dictionary<string, string>();
 		private void FormMain_Load(object sender, EventArgs e)
 		{
 			textBuffer = textBuffer + Properties.Resources.connecting_string + Environment.NewLine;
@@ -156,27 +161,29 @@ namespace MQTT_Client
 				if (!string.IsNullOrEmpty(URL_FIREBASE) && !string.IsNullOrEmpty(SECRET_FIREBASE))
 				{
 					firebaseService = new FirebaseService(URL_FIREBASE, SECRET_FIREBASE);
-					Task.Run(() =>
+					Task.Run(async () =>
 					{
-						firebaseService.DataReceived += (senderFirebase, eFirebase) =>
+						while (true && !disconnect)
 						{
-							string k = eFirebase.Key;
-							object d = eFirebase.Data;
-							if (k != null && d != null)
+							if (switcher)
 							{
-								string postString = Properties.Resources.notification_string + $"Key: [{eFirebase.Key}] Data: [{eFirebase.Data.ToString()}]";
-								AddDataToText(postString);
-
-								RuleControl rule;
+								List<RuleControl> rules;
 								lock (ruleControls)
 								{
-									rule = ruleControls.FirstOrDefault(r => r.FirebaseReference == eFirebase.Key);
+									rules = ruleControls.Where(r => r.Direction == false).ToList(); // Создаём копию списка
 								}
-
-								if (rule != null)
-									mqttBrokerClient.Publish(rule.MQTT_topic, eFirebase.Data.ToString());
+								foreach (RuleControl rule in rules)
+								{
+									string firebaseData = await firebaseService.GetDataAsync<string>(rule.FirebaseReference);
+									if (!subscriptions.TryGetValue(rule.FirebaseReference, out string oldValue) || oldValue != firebaseData)
+									{
+										subscriptions[rule.FirebaseReference] = firebaseData;
+										mqttBrokerClient.Publish(rule.MQTT_topic, firebaseData);
+									}
+								}
+								await Task.Delay(3000);
 							}
-						};
+						}
 					});
 				}
 
@@ -325,9 +332,13 @@ namespace MQTT_Client
 			{
 				AddDataToText(Properties.Resources.disconnecting_string);
 
-				//пиздец не поулчается потому что RuleControl это UserControl. сделать структуру RuleControl для сейва
+				List<RuleUnit> ruleUnits = new List<RuleUnit>();
+				foreach (RuleControl rule in ruleControls)
+				{
+					ruleUnits.Add(new RuleUnit(rule.FirebaseReference, rule.MQTT_topic, rule.Direction));
+				}
 				// Сериализуем список в JSON
-				string json = JsonConvert.SerializeObject(ruleControls, Formatting.Indented);
+				string json = JsonConvert.SerializeObject(ruleUnits, Formatting.Indented);
 				// Записываем JSON в файл
 				File.WriteAllText(filePathRules, json);
 
@@ -403,11 +414,12 @@ namespace MQTT_Client
 					switcher = !switcher;
 					buttonStartStop.Text = "Start";
 					buttonAddRule.Enabled = true;
+					flowLayoutPanelRules.Enabled = true;
 
 					foreach (RuleControl rule in ruleControls)
 					{
 						mqttBrokerClient.Unsubscribe(rule.MQTT_topic);
-						firebaseService.Unsubscribe(rule.FirebaseReference);
+						//firebaseService.Unsubscribe(rule.FirebaseReference);
 						AddDataToText($"Unsubscribe on topic: {rule.MQTT_topic}. Unsubscribe on path: {rule.FirebaseReference}.");
 					}
 				}
@@ -417,11 +429,12 @@ namespace MQTT_Client
 					switcher = !switcher;
 					buttonStartStop.Text = "Stop";
 					buttonAddRule.Enabled = false;
+					flowLayoutPanelRules.Enabled = false;
 
 					foreach (RuleControl rule in ruleControls)
 					{
 						mqttBrokerClient.Subscribe(rule.MQTT_topic);
-						firebaseService.Subscribe(rule.FirebaseReference);
+						//firebaseService.Subscribe(rule.FirebaseReference);
 						AddDataToText($"Subscribe on topic: {rule.MQTT_topic}. Subscribe on path: {rule.FirebaseReference}.");
 					}
 				}

@@ -40,9 +40,9 @@
 			this.tabControlMain = new System.Windows.Forms.TabControl();
 			this.tabPageClient = new System.Windows.Forms.TabPage();
 			this.tabPageRules = new System.Windows.Forms.TabPage();
-			this.flowLayoutPanelRules = new System.Windows.Forms.FlowLayoutPanel();
-			this.buttonStartStop = new System.Windows.Forms.Button();
 			this.buttonAddRule = new System.Windows.Forms.Button();
+			this.buttonStartStop = new System.Windows.Forms.Button();
+			this.flowLayoutPanelRules = new System.Windows.Forms.FlowLayoutPanel();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
 			this.tabControlMain.SuspendLayout();
 			this.tabPageClient.SuspendLayout();
@@ -194,17 +194,18 @@
 			this.tabPageRules.TabIndex = 1;
 			this.tabPageRules.Text = "Rules";
 			// 
-			// flowLayoutPanelRules
+			// buttonAddRule
 			// 
-			this.flowLayoutPanelRules.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.flowLayoutPanelRules.AutoScroll = true;
-			this.flowLayoutPanelRules.BackColor = System.Drawing.Color.Tan;
-			this.flowLayoutPanelRules.Location = new System.Drawing.Point(6, 44);
-			this.flowLayoutPanelRules.Name = "flowLayoutPanelRules";
-			this.flowLayoutPanelRules.Size = new System.Drawing.Size(824, 457);
-			this.flowLayoutPanelRules.TabIndex = 0;
+			this.buttonAddRule.BackColor = System.Drawing.Color.Wheat;
+			this.buttonAddRule.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonAddRule.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.buttonAddRule.Location = new System.Drawing.Point(680, 6);
+			this.buttonAddRule.Name = "buttonAddRule";
+			this.buttonAddRule.Size = new System.Drawing.Size(150, 32);
+			this.buttonAddRule.TabIndex = 2;
+			this.buttonAddRule.Text = "Add Rule";
+			this.buttonAddRule.UseVisualStyleBackColor = false;
+			this.buttonAddRule.Click += new System.EventHandler(this.buttonAddRule_Click);
 			// 
 			// buttonStartStop
 			// 
@@ -219,18 +220,18 @@
 			this.buttonStartStop.UseVisualStyleBackColor = false;
 			this.buttonStartStop.Click += new System.EventHandler(this.buttonStartStop_Click);
 			// 
-			// buttonAddRule
+			// flowLayoutPanelRules
 			// 
-			this.buttonAddRule.BackColor = System.Drawing.Color.Wheat;
-			this.buttonAddRule.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.buttonAddRule.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.buttonAddRule.Location = new System.Drawing.Point(680, 6);
-			this.buttonAddRule.Name = "buttonAddRule";
-			this.buttonAddRule.Size = new System.Drawing.Size(150, 32);
-			this.buttonAddRule.TabIndex = 2;
-			this.buttonAddRule.Text = "Add Rule";
-			this.buttonAddRule.UseVisualStyleBackColor = false;
-			this.buttonAddRule.Click += new System.EventHandler(this.buttonAddRule_Click);
+			this.flowLayoutPanelRules.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.flowLayoutPanelRules.AutoScroll = true;
+			this.flowLayoutPanelRules.BackColor = System.Drawing.Color.Tan;
+			this.flowLayoutPanelRules.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.flowLayoutPanelRules.Location = new System.Drawing.Point(6, 44);
+			this.flowLayoutPanelRules.Name = "flowLayoutPanelRules";
+			this.flowLayoutPanelRules.Size = new System.Drawing.Size(824, 457);
+			this.flowLayoutPanelRules.TabIndex = 0;
 			// 
 			// FormMain
 			// 

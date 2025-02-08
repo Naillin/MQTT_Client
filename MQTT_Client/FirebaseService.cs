@@ -74,7 +74,6 @@ namespace MQTT_Client
 			return data.Select(item => item.Object).ToList();
 		}
 
-		//КОРОЧЕ НИХРЕНА НЕ РАБОТАЕТ ЭТОТ СУБСКРАЙБ. пока что можно сделать опрашивалку раз в секунду по ключу с помощью GetDataAsync. данные fb старые хранить по <ключ=путь, значение> в словаре.
 		// Подписка на изменения в данных
 		public IDisposable Subscribe(string path)
 		{

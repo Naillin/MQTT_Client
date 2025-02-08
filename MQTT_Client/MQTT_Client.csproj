@@ -87,6 +87,7 @@
     <Compile Include="FormElements\RuleControl.Designer.cs">
       <DependentUpon>RuleControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormElements\RuleUnit.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
