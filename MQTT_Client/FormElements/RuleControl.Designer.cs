@@ -44,6 +44,7 @@
 			this.textBoxFirebaseReference.Name = "textBoxFirebaseReference";
 			this.textBoxFirebaseReference.Size = new System.Drawing.Size(202, 25);
 			this.textBoxFirebaseReference.TabIndex = 0;
+			this.textBoxFirebaseReference.TextChanged += new System.EventHandler(this.textBoxFirebaseReference_TextChanged);
 			// 
 			// textBoxMQTTtopic
 			// 
@@ -54,6 +55,7 @@
 			this.textBoxMQTTtopic.Name = "textBoxMQTTtopic";
 			this.textBoxMQTTtopic.Size = new System.Drawing.Size(202, 25);
 			this.textBoxMQTTtopic.TabIndex = 1;
+			this.textBoxMQTTtopic.TextChanged += new System.EventHandler(this.textBoxMQTTtopic_TextChanged);
 			// 
 			// buttonSwitch
 			// 
