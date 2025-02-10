@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -136,7 +137,7 @@ namespace MQTT_Client
 				initConfig();
 
 				//MQTT
-				mqttBrokerClient = new MqttBrokerClient(IPAddress.Parse(ADDRESS), PORT, LOGIN, PASSWORD);
+				mqttBrokerClient = new MqttBrokerClient(ADDRESS, PORT, LOGIN, PASSWORD);
 				mqttBrokerClient.Connect();
 
 				Task.Run(() =>
@@ -149,7 +150,8 @@ namespace MQTT_Client
 						RuleControl rule;
 						lock (ruleControls)
 						{
-							rule = ruleControls.FirstOrDefault(r => r.MQTT_topic == eMQTT.Topic);
+							List<RuleControl> rules = ruleControls.Where(r => r.Direction == true).ToList();
+							rule = rules.FirstOrDefault(r => r.MQTT_topic == eMQTT.Topic);
 						}
 
 						if (rule != null)

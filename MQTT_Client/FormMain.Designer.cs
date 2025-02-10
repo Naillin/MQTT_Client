@@ -36,13 +36,14 @@
 			this.buttonSend = new System.Windows.Forms.Button();
 			this.treeViewMain = new System.Windows.Forms.TreeView();
 			this.textBoxMessage = new System.Windows.Forms.TextBox();
-			this.labelTopic = new System.Windows.Forms.Label();
 			this.tabControlMain = new System.Windows.Forms.TabControl();
 			this.tabPageClient = new System.Windows.Forms.TabPage();
 			this.tabPageRules = new System.Windows.Forms.TabPage();
 			this.buttonAddRule = new System.Windows.Forms.Button();
 			this.buttonStartStop = new System.Windows.Forms.Button();
 			this.flowLayoutPanelRules = new System.Windows.Forms.FlowLayoutPanel();
+			this.labelTopic = new System.Windows.Forms.Label();
+			this.labelMessage = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
 			this.tabControlMain.SuspendLayout();
 			this.tabPageClient.SuspendLayout();
@@ -133,25 +134,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBoxMessage.BackColor = System.Drawing.Color.Cornsilk;
 			this.textBoxMessage.Font = new System.Drawing.Font("Franklin Gothic Medium", 11.25F, System.Drawing.FontStyle.Italic);
-			this.textBoxMessage.Location = new System.Drawing.Point(353, 35);
+			this.textBoxMessage.Location = new System.Drawing.Point(457, 35);
 			this.textBoxMessage.Multiline = true;
 			this.textBoxMessage.Name = "textBoxMessage";
-			this.textBoxMessage.Size = new System.Drawing.Size(477, 28);
+			this.textBoxMessage.Size = new System.Drawing.Size(373, 28);
 			this.textBoxMessage.TabIndex = 6;
 			this.textBoxMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxMessage_KeyDown);
-			// 
-			// labelTopic
-			// 
-			this.labelTopic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.labelTopic.AutoSize = true;
-			this.labelTopic.BackColor = System.Drawing.Color.Transparent;
-			this.labelTopic.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Italic);
-			this.labelTopic.Location = new System.Drawing.Point(353, 6);
-			this.labelTopic.Name = "labelTopic";
-			this.labelTopic.Size = new System.Drawing.Size(102, 26);
-			this.labelTopic.TabIndex = 7;
-			this.labelTopic.Text = "labelTopic";
 			// 
 			// tabControlMain
 			// 
@@ -169,6 +157,7 @@
 			// tabPageClient
 			// 
 			this.tabPageClient.BackColor = System.Drawing.Color.OldLace;
+			this.tabPageClient.Controls.Add(this.labelMessage);
 			this.tabPageClient.Controls.Add(this.treeViewMain);
 			this.tabPageClient.Controls.Add(this.textBoxMessage);
 			this.tabPageClient.Controls.Add(this.buttonSend);
@@ -233,6 +222,32 @@
 			this.flowLayoutPanelRules.Size = new System.Drawing.Size(824, 457);
 			this.flowLayoutPanelRules.TabIndex = 0;
 			// 
+			// labelTopic
+			// 
+			this.labelTopic.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.labelTopic.AutoSize = true;
+			this.labelTopic.BackColor = System.Drawing.Color.Transparent;
+			this.labelTopic.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Italic);
+			this.labelTopic.Location = new System.Drawing.Point(353, 6);
+			this.labelTopic.Name = "labelTopic";
+			this.labelTopic.Size = new System.Drawing.Size(102, 26);
+			this.labelTopic.TabIndex = 7;
+			this.labelTopic.Text = "labelTopic";
+			// 
+			// labelMessage
+			// 
+			this.labelMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.labelMessage.AutoSize = true;
+			this.labelMessage.BackColor = System.Drawing.Color.Transparent;
+			this.labelMessage.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Italic);
+			this.labelMessage.Location = new System.Drawing.Point(353, 37);
+			this.labelMessage.Name = "labelMessage";
+			this.labelMessage.Size = new System.Drawing.Size(98, 26);
+			this.labelMessage.TabIndex = 8;
+			this.labelMessage.Text = "Message:";
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -268,13 +283,14 @@
 		private System.Windows.Forms.Button buttonSend;
 		private System.Windows.Forms.TreeView treeViewMain;
 		private System.Windows.Forms.TextBox textBoxMessage;
-		private System.Windows.Forms.Label labelTopic;
 		private System.Windows.Forms.TabControl tabControlMain;
 		private System.Windows.Forms.TabPage tabPageClient;
 		private System.Windows.Forms.TabPage tabPageRules;
 		private System.Windows.Forms.Button buttonStartStop;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelRules;
 		private System.Windows.Forms.Button buttonAddRule;
+		private System.Windows.Forms.Label labelMessage;
+		private System.Windows.Forms.Label labelTopic;
 	}
 }
 

@@ -22,14 +22,14 @@ namespace MQTT_Client
 		// Событие для получения входящих сообщений
 		public event EventHandler<MqttMessageReceivedEventArgs> MessageReceived;
 
-		public MqttBrokerClient(IPAddress brokerAddress, int port, string username, string password)
+		public MqttBrokerClient(string brokerAddress, int port, string username, string password)
 		{
 			_clientId = Guid.NewGuid().ToString();
 			_username = username;
 			_password = password;
 
 			// Создание клиента MQTT
-			_mqttClient = new MqttClient(brokerAddress.ToString(), port, false, null, null, MqttSslProtocols.None);
+			_mqttClient = new MqttClient(brokerAddress, port, false, null, null, MqttSslProtocols.None);
 
 			// Настройка обработчиков событий
 			_mqttClient.MqttMsgPublishReceived += OnMqttMsgPublishReceived;
