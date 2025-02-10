@@ -22,7 +22,7 @@ MQTT_client is an application that allows you to connect to MQTT brokers, subscr
 
 ### "Rules" Tab
 
-- **Creating Rules**: Link Firebase database fields to MQTT topics. Rules allow automatic synchronization of data between Firebase and MQTT.
+- **Creating Rules**: Link Firebase database fields to MQTT topics. Rules allow automatic synchronization of data between Firebase and MQTT. All rules are stored at the root in the `rules.json` file.
 
 ## Usage Example
 
