@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="connected_string" xml:space="preserve">
-    <value>Connected</value>
+    <value>MQTT connected</value>
   </data>
   <data name="connecting_string" xml:space="preserve">
-    <value>Connecting</value>
+    <value>Connecting to MQTT</value>
   </data>
   <data name="disconnecting_string" xml:space="preserve">
-    <value>Disconnecting</value>
+    <value>Disconnecting from MQTT</value>
   </data>
   <data name="empty_message_string" xml:space="preserve">
     <value>Empty message!</value>
@@ -149,7 +149,7 @@
     <value>Message recived: </value>
   </data>
   <data name="not_connected_string" xml:space="preserve">
-    <value>Not connected</value>
+    <value>Not connected to MQTT</value>
   </data>
   <data name="reconnect_string" xml:space="preserve">
     <value>Reconnecting</value>

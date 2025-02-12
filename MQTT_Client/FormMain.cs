@@ -183,10 +183,14 @@ namespace MQTT_Client
 									string firebaseData = await firebaseService.GetDataAsync<string>(rule.FirebaseReference);
 									if (!subscriptions.TryGetValue(rule.FirebaseReference, out string oldValue) || oldValue != firebaseData)
 									{
+										string postString = Properties.Resources.notification_string + $"Firebase path: [{rule.FirebaseReference}] Message: [{firebaseData}]";
+										AddDataToText(postString);
+
 										subscriptions[rule.FirebaseReference] = firebaseData;
 										mqttBrokerClient.Publish(rule.MQTT_topic, firebaseData);
 									}
 								}
+
 								await Task.Delay(3000);
 							}
 						}
@@ -426,7 +430,8 @@ namespace MQTT_Client
 					{
 						mqttBrokerClient.Unsubscribe(rule.MQTT_topic);
 						//firebaseService.Unsubscribe(rule.FirebaseReference);
-						AddDataToText($"Unsubscribe on topic: {rule.MQTT_topic}. Unsubscribe on path: {rule.FirebaseReference}.");
+						string text = $"Deactivate rule: [{rule.MQTT_topic}] {(rule.Direction ? "<" : ">")} [{rule.FirebaseReference}].";
+						AddDataToText(text);
 					}
 				}
 				else
@@ -441,7 +446,8 @@ namespace MQTT_Client
 					{
 						mqttBrokerClient.Subscribe(rule.MQTT_topic);
 						//firebaseService.Subscribe(rule.FirebaseReference);
-						AddDataToText($"Subscribe on topic: {rule.MQTT_topic}. Subscribe on path: {rule.FirebaseReference}.");
+						string text = $"Activate rule: [{rule.MQTT_topic}] {(rule.Direction ? "<" : ">")} [{rule.FirebaseReference}].";
+						AddDataToText(text);
 					}
 				}
 			}

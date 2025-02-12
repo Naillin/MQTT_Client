@@ -61,7 +61,7 @@ namespace MQTT_Client.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Connected.
+        ///   Ищет локализованную строку, похожую на MQTT connected.
         /// </summary>
         internal static string connected_string {
             get {
@@ -70,7 +70,7 @@ namespace MQTT_Client.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Connecting.
+        ///   Ищет локализованную строку, похожую на Connecting to MQTT.
         /// </summary>
         internal static string connecting_string {
             get {
@@ -79,7 +79,7 @@ namespace MQTT_Client.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Disconnecting.
+        ///   Ищет локализованную строку, похожую на Disconnecting from MQTT.
         /// </summary>
         internal static string disconnecting_string {
             get {
@@ -145,7 +145,7 @@ namespace MQTT_Client.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Not connected.
+        ///   Ищет локализованную строку, похожую на Not connected to MQTT.
         /// </summary>
         internal static string not_connected_string {
             get {
