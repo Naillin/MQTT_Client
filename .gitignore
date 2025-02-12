@@ -30,6 +30,7 @@ _ReSharper.Caches/
 *.rsuser
 *.sln.iml
 *.ide/
+.pfx
 
 ## Файлы NuGet ##
 # Исключить файл блокировки (нужен для PackageReference)

@@ -73,15 +73,19 @@ namespace MQTT_Client
 			{
 				string json = File.ReadAllText(filePathRules);
 				List<RuleUnit> jsonRules = JsonConvert.DeserializeObject<List<RuleUnit>>(json);
-				foreach (RuleUnit rule in jsonRules)
+				if (jsonRules != null && jsonRules.Count != 0)
 				{
-					AddRule(rule.FirebaseReference, rule.MQTT_topic, rule.Direction);
-				}
+					foreach (RuleUnit rule in jsonRules)
+					{
+						AddRule(rule.FirebaseReference, rule.MQTT_topic, rule.Direction);
+					}
 
-				if (ruleControls.Count != 0)
-				{
 					buttonStartStop.Enabled = true;
 				}
+			}
+			else
+			{
+				File.Create(filePathRules).Close();
 			}
 		}
 
