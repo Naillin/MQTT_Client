@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
 			this.textBoxInfo = new System.Windows.Forms.TextBox();
 			this.buttonAddTopic = new System.Windows.Forms.Button();
@@ -48,6 +49,7 @@
 			this.buttonAddRuleFirestore = new System.Windows.Forms.Button();
 			this.buttonStartStopFirestore = new System.Windows.Forms.Button();
 			this.flowLayoutPanelRulesFirestore = new System.Windows.Forms.FlowLayoutPanel();
+			this.imageListMain = new System.Windows.Forms.ImageList(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
 			this.tabControlMain.SuspendLayout();
 			this.tabPageClient.SuspendLayout();
@@ -154,6 +156,7 @@
 			this.tabControlMain.Controls.Add(this.tabPageRulesFirebase);
 			this.tabControlMain.Controls.Add(this.tabPageRulesFirestore);
 			this.tabControlMain.Font = new System.Drawing.Font("Franklin Gothic Medium", 18F, System.Drawing.FontStyle.Italic);
+			this.tabControlMain.ImageList = this.imageListMain;
 			this.tabControlMain.Location = new System.Drawing.Point(12, 43);
 			this.tabControlMain.Name = "tabControlMain";
 			this.tabControlMain.SelectedIndex = 0;
@@ -169,6 +172,7 @@
 			this.tabPageClient.Controls.Add(this.buttonSend);
 			this.tabPageClient.Controls.Add(this.labelTopic);
 			this.tabPageClient.Controls.Add(this.buttonAddTopic);
+			this.tabPageClient.ImageIndex = 2;
 			this.tabPageClient.Location = new System.Drawing.Point(4, 39);
 			this.tabPageClient.Name = "tabPageClient";
 			this.tabPageClient.Padding = new System.Windows.Forms.Padding(3);
@@ -208,6 +212,7 @@
 			this.tabPageRulesFirebase.Controls.Add(this.buttonAddRuleFirebase);
 			this.tabPageRulesFirebase.Controls.Add(this.buttonStartStopFirebase);
 			this.tabPageRulesFirebase.Controls.Add(this.flowLayoutPanelRulesFirebase);
+			this.tabPageRulesFirebase.ImageIndex = 0;
 			this.tabPageRulesFirebase.Location = new System.Drawing.Point(4, 39);
 			this.tabPageRulesFirebase.Name = "tabPageRulesFirebase";
 			this.tabPageRulesFirebase.Padding = new System.Windows.Forms.Padding(3);
@@ -256,10 +261,11 @@
 			// 
 			// tabPageRulesFirestore
 			// 
-			this.tabPageRulesFirestore.BackColor = System.Drawing.Color.Honeydew;
+			this.tabPageRulesFirestore.BackColor = System.Drawing.Color.Azure;
 			this.tabPageRulesFirestore.Controls.Add(this.buttonAddRuleFirestore);
 			this.tabPageRulesFirestore.Controls.Add(this.buttonStartStopFirestore);
 			this.tabPageRulesFirestore.Controls.Add(this.flowLayoutPanelRulesFirestore);
+			this.tabPageRulesFirestore.ImageIndex = 1;
 			this.tabPageRulesFirestore.Location = new System.Drawing.Point(4, 39);
 			this.tabPageRulesFirestore.Name = "tabPageRulesFirestore";
 			this.tabPageRulesFirestore.Padding = new System.Windows.Forms.Padding(3);
@@ -269,7 +275,7 @@
 			// 
 			// buttonAddRuleFirestore
 			// 
-			this.buttonAddRuleFirestore.BackColor = System.Drawing.Color.LightGreen;
+			this.buttonAddRuleFirestore.BackColor = System.Drawing.Color.DeepSkyBlue;
 			this.buttonAddRuleFirestore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.buttonAddRuleFirestore.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.buttonAddRuleFirestore.Location = new System.Drawing.Point(680, 6);
@@ -282,7 +288,7 @@
 			// 
 			// buttonStartStopFirestore
 			// 
-			this.buttonStartStopFirestore.BackColor = System.Drawing.Color.LightGreen;
+			this.buttonStartStopFirestore.BackColor = System.Drawing.Color.DeepSkyBlue;
 			this.buttonStartStopFirestore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.buttonStartStopFirestore.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.buttonStartStopFirestore.Location = new System.Drawing.Point(6, 6);
@@ -299,12 +305,20 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.flowLayoutPanelRulesFirestore.AutoScroll = true;
-			this.flowLayoutPanelRulesFirestore.BackColor = System.Drawing.Color.SeaGreen;
+			this.flowLayoutPanelRulesFirestore.BackColor = System.Drawing.Color.Teal;
 			this.flowLayoutPanelRulesFirestore.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.flowLayoutPanelRulesFirestore.Location = new System.Drawing.Point(6, 44);
 			this.flowLayoutPanelRulesFirestore.Name = "flowLayoutPanelRulesFirestore";
 			this.flowLayoutPanelRulesFirestore.Size = new System.Drawing.Size(824, 457);
 			this.flowLayoutPanelRulesFirestore.TabIndex = 9;
+			// 
+			// imageListMain
+			// 
+			this.imageListMain.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListMain.ImageStream")));
+			this.imageListMain.TransparentColor = System.Drawing.Color.Transparent;
+			this.imageListMain.Images.SetKeyName(0, "firebase.png");
+			this.imageListMain.Images.SetKeyName(1, "firestore.png");
+			this.imageListMain.Images.SetKeyName(2, "iconMQTT.png");
 			// 
 			// FormMain
 			// 
@@ -354,6 +368,7 @@
 		private System.Windows.Forms.Button buttonAddRuleFirestore;
 		private System.Windows.Forms.Button buttonStartStopFirestore;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelRulesFirestore;
+		private System.Windows.Forms.ImageList imageListMain;
 	}
 }
 

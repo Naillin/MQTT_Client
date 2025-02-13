@@ -622,7 +622,7 @@ namespace MQTT_Client
 		{
 			// Создаем новый элемент управления
 			RuleControl ruleControl = new RuleControl(FirestoreReference, MQTT_topic, Direction);
-			ruleControl.BackColor = Color.PaleGreen;
+			ruleControl.BackColor = Color.SkyBlue;
 			// Добавляем его в контейнер
 			flowLayoutPanelRulesFirestore.Controls.Add(ruleControl);
 			// Добавляем его в список для управления
