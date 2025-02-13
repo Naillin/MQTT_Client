@@ -163,6 +163,24 @@ namespace MQTT_Client.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на MQTT Reciver for Firebase is ready.
+        /// </summary>
+        internal static string ready_mqtt_firebase {
+            get {
+                return ResourceManager.GetString("ready_mqtt_firebase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на MQTT Reciver for Firestore is ready.
+        /// </summary>
+        internal static string ready_mqtt_firestore {
+            get {
+                return ResourceManager.GetString("ready_mqtt_firestore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Reconnecting.
         /// </summary>
         internal static string reconnect_string {

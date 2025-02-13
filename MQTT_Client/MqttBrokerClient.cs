@@ -24,7 +24,7 @@ namespace MQTT_Client
 
 		public MqttBrokerClient(string brokerAddress, int port, string username, string password)
 		{
-			_clientId = Guid.NewGuid().ToString();
+			_clientId = Guid.NewGuid().ToString(); //будет ли новый guid если создавать новый объект mqttbrokerclient?
 			_username = username;
 			_password = password;
 

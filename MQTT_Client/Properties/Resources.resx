@@ -151,6 +151,12 @@
   <data name="not_connected_string" xml:space="preserve">
     <value>Not connected to MQTT</value>
   </data>
+  <data name="ready_mqtt_firebase" xml:space="preserve">
+    <value>MQTT Reciver for Firebase is ready</value>
+  </data>
+  <data name="ready_mqtt_firestore" xml:space="preserve">
+    <value>MQTT Reciver for Firestore is ready</value>
+  </data>
   <data name="reconnect_string" xml:space="preserve">
     <value>Reconnecting</value>
   </data>

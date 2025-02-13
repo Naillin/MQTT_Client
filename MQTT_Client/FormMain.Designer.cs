@@ -38,16 +38,21 @@
 			this.textBoxMessage = new System.Windows.Forms.TextBox();
 			this.tabControlMain = new System.Windows.Forms.TabControl();
 			this.tabPageClient = new System.Windows.Forms.TabPage();
-			this.tabPageRules = new System.Windows.Forms.TabPage();
-			this.buttonAddRule = new System.Windows.Forms.Button();
-			this.buttonStartStop = new System.Windows.Forms.Button();
-			this.flowLayoutPanelRules = new System.Windows.Forms.FlowLayoutPanel();
-			this.labelTopic = new System.Windows.Forms.Label();
 			this.labelMessage = new System.Windows.Forms.Label();
+			this.labelTopic = new System.Windows.Forms.Label();
+			this.tabPageRulesFirebase = new System.Windows.Forms.TabPage();
+			this.buttonAddRuleFirebase = new System.Windows.Forms.Button();
+			this.buttonStartStopFirebase = new System.Windows.Forms.Button();
+			this.flowLayoutPanelRulesFirebase = new System.Windows.Forms.FlowLayoutPanel();
+			this.tabPageRulesFirestore = new System.Windows.Forms.TabPage();
+			this.buttonAddRuleFirestore = new System.Windows.Forms.Button();
+			this.buttonStartStopFirestore = new System.Windows.Forms.Button();
+			this.flowLayoutPanelRulesFirestore = new System.Windows.Forms.FlowLayoutPanel();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
 			this.tabControlMain.SuspendLayout();
 			this.tabPageClient.SuspendLayout();
-			this.tabPageRules.SuspendLayout();
+			this.tabPageRulesFirebase.SuspendLayout();
+			this.tabPageRulesFirestore.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// textBoxInfo
@@ -146,7 +151,8 @@
 			this.tabControlMain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.tabControlMain.Controls.Add(this.tabPageClient);
-			this.tabControlMain.Controls.Add(this.tabPageRules);
+			this.tabControlMain.Controls.Add(this.tabPageRulesFirebase);
+			this.tabControlMain.Controls.Add(this.tabPageRulesFirestore);
 			this.tabControlMain.Font = new System.Drawing.Font("Franklin Gothic Medium", 18F, System.Drawing.FontStyle.Italic);
 			this.tabControlMain.Location = new System.Drawing.Point(12, 43);
 			this.tabControlMain.Name = "tabControlMain";
@@ -170,57 +176,18 @@
 			this.tabPageClient.TabIndex = 0;
 			this.tabPageClient.Text = "MQTT Client";
 			// 
-			// tabPageRules
+			// labelMessage
 			// 
-			this.tabPageRules.BackColor = System.Drawing.Color.OldLace;
-			this.tabPageRules.Controls.Add(this.buttonAddRule);
-			this.tabPageRules.Controls.Add(this.buttonStartStop);
-			this.tabPageRules.Controls.Add(this.flowLayoutPanelRules);
-			this.tabPageRules.Location = new System.Drawing.Point(4, 39);
-			this.tabPageRules.Name = "tabPageRules";
-			this.tabPageRules.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageRules.Size = new System.Drawing.Size(836, 507);
-			this.tabPageRules.TabIndex = 1;
-			this.tabPageRules.Text = "Rules";
-			// 
-			// buttonAddRule
-			// 
-			this.buttonAddRule.BackColor = System.Drawing.Color.Wheat;
-			this.buttonAddRule.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.buttonAddRule.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.buttonAddRule.Location = new System.Drawing.Point(680, 6);
-			this.buttonAddRule.Name = "buttonAddRule";
-			this.buttonAddRule.Size = new System.Drawing.Size(150, 32);
-			this.buttonAddRule.TabIndex = 2;
-			this.buttonAddRule.Text = "Add Rule";
-			this.buttonAddRule.UseVisualStyleBackColor = false;
-			this.buttonAddRule.Click += new System.EventHandler(this.buttonAddRule_Click);
-			// 
-			// buttonStartStop
-			// 
-			this.buttonStartStop.BackColor = System.Drawing.Color.Wheat;
-			this.buttonStartStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.buttonStartStop.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.buttonStartStop.Location = new System.Drawing.Point(6, 6);
-			this.buttonStartStop.Name = "buttonStartStop";
-			this.buttonStartStop.Size = new System.Drawing.Size(150, 32);
-			this.buttonStartStop.TabIndex = 1;
-			this.buttonStartStop.Text = "Start";
-			this.buttonStartStop.UseVisualStyleBackColor = false;
-			this.buttonStartStop.Click += new System.EventHandler(this.buttonStartStop_Click);
-			// 
-			// flowLayoutPanelRules
-			// 
-			this.flowLayoutPanelRules.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+			this.labelMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.flowLayoutPanelRules.AutoScroll = true;
-			this.flowLayoutPanelRules.BackColor = System.Drawing.Color.Tan;
-			this.flowLayoutPanelRules.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.flowLayoutPanelRules.Location = new System.Drawing.Point(6, 44);
-			this.flowLayoutPanelRules.Name = "flowLayoutPanelRules";
-			this.flowLayoutPanelRules.Size = new System.Drawing.Size(824, 457);
-			this.flowLayoutPanelRules.TabIndex = 0;
+			this.labelMessage.AutoSize = true;
+			this.labelMessage.BackColor = System.Drawing.Color.Transparent;
+			this.labelMessage.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Italic);
+			this.labelMessage.Location = new System.Drawing.Point(353, 37);
+			this.labelMessage.Name = "labelMessage";
+			this.labelMessage.Size = new System.Drawing.Size(98, 26);
+			this.labelMessage.TabIndex = 8;
+			this.labelMessage.Text = "Message:";
 			// 
 			// labelTopic
 			// 
@@ -235,18 +202,109 @@
 			this.labelTopic.TabIndex = 7;
 			this.labelTopic.Text = "labelTopic";
 			// 
-			// labelMessage
+			// tabPageRulesFirebase
 			// 
-			this.labelMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.tabPageRulesFirebase.BackColor = System.Drawing.Color.OldLace;
+			this.tabPageRulesFirebase.Controls.Add(this.buttonAddRuleFirebase);
+			this.tabPageRulesFirebase.Controls.Add(this.buttonStartStopFirebase);
+			this.tabPageRulesFirebase.Controls.Add(this.flowLayoutPanelRulesFirebase);
+			this.tabPageRulesFirebase.Location = new System.Drawing.Point(4, 39);
+			this.tabPageRulesFirebase.Name = "tabPageRulesFirebase";
+			this.tabPageRulesFirebase.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPageRulesFirebase.Size = new System.Drawing.Size(836, 507);
+			this.tabPageRulesFirebase.TabIndex = 1;
+			this.tabPageRulesFirebase.Text = "Firebase Rules";
+			// 
+			// buttonAddRuleFirebase
+			// 
+			this.buttonAddRuleFirebase.BackColor = System.Drawing.Color.Wheat;
+			this.buttonAddRuleFirebase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonAddRuleFirebase.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.buttonAddRuleFirebase.Location = new System.Drawing.Point(680, 6);
+			this.buttonAddRuleFirebase.Name = "buttonAddRuleFirebase";
+			this.buttonAddRuleFirebase.Size = new System.Drawing.Size(150, 32);
+			this.buttonAddRuleFirebase.TabIndex = 2;
+			this.buttonAddRuleFirebase.Text = "Add Rule";
+			this.buttonAddRuleFirebase.UseVisualStyleBackColor = false;
+			this.buttonAddRuleFirebase.Click += new System.EventHandler(this.buttonAddRuleFirebase_Click);
+			// 
+			// buttonStartStopFirebase
+			// 
+			this.buttonStartStopFirebase.BackColor = System.Drawing.Color.Wheat;
+			this.buttonStartStopFirebase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonStartStopFirebase.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.buttonStartStopFirebase.Location = new System.Drawing.Point(6, 6);
+			this.buttonStartStopFirebase.Name = "buttonStartStopFirebase";
+			this.buttonStartStopFirebase.Size = new System.Drawing.Size(150, 32);
+			this.buttonStartStopFirebase.TabIndex = 1;
+			this.buttonStartStopFirebase.Text = "Start";
+			this.buttonStartStopFirebase.UseVisualStyleBackColor = false;
+			this.buttonStartStopFirebase.Click += new System.EventHandler(this.buttonStartStopFirebase_Click);
+			// 
+			// flowLayoutPanelRulesFirebase
+			// 
+			this.flowLayoutPanelRulesFirebase.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.labelMessage.AutoSize = true;
-			this.labelMessage.BackColor = System.Drawing.Color.Transparent;
-			this.labelMessage.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Italic);
-			this.labelMessage.Location = new System.Drawing.Point(353, 37);
-			this.labelMessage.Name = "labelMessage";
-			this.labelMessage.Size = new System.Drawing.Size(98, 26);
-			this.labelMessage.TabIndex = 8;
-			this.labelMessage.Text = "Message:";
+			this.flowLayoutPanelRulesFirebase.AutoScroll = true;
+			this.flowLayoutPanelRulesFirebase.BackColor = System.Drawing.Color.Tan;
+			this.flowLayoutPanelRulesFirebase.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.flowLayoutPanelRulesFirebase.Location = new System.Drawing.Point(6, 44);
+			this.flowLayoutPanelRulesFirebase.Name = "flowLayoutPanelRulesFirebase";
+			this.flowLayoutPanelRulesFirebase.Size = new System.Drawing.Size(824, 457);
+			this.flowLayoutPanelRulesFirebase.TabIndex = 0;
+			// 
+			// tabPageRulesFirestore
+			// 
+			this.tabPageRulesFirestore.BackColor = System.Drawing.Color.Honeydew;
+			this.tabPageRulesFirestore.Controls.Add(this.buttonAddRuleFirestore);
+			this.tabPageRulesFirestore.Controls.Add(this.buttonStartStopFirestore);
+			this.tabPageRulesFirestore.Controls.Add(this.flowLayoutPanelRulesFirestore);
+			this.tabPageRulesFirestore.Location = new System.Drawing.Point(4, 39);
+			this.tabPageRulesFirestore.Name = "tabPageRulesFirestore";
+			this.tabPageRulesFirestore.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPageRulesFirestore.Size = new System.Drawing.Size(836, 507);
+			this.tabPageRulesFirestore.TabIndex = 2;
+			this.tabPageRulesFirestore.Text = "Firestore Rules";
+			// 
+			// buttonAddRuleFirestore
+			// 
+			this.buttonAddRuleFirestore.BackColor = System.Drawing.Color.LightGreen;
+			this.buttonAddRuleFirestore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonAddRuleFirestore.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.buttonAddRuleFirestore.Location = new System.Drawing.Point(680, 6);
+			this.buttonAddRuleFirestore.Name = "buttonAddRuleFirestore";
+			this.buttonAddRuleFirestore.Size = new System.Drawing.Size(150, 32);
+			this.buttonAddRuleFirestore.TabIndex = 10;
+			this.buttonAddRuleFirestore.Text = "Add Rule";
+			this.buttonAddRuleFirestore.UseVisualStyleBackColor = false;
+			this.buttonAddRuleFirestore.Click += new System.EventHandler(this.buttonAddRuleFirestore_Click);
+			// 
+			// buttonStartStopFirestore
+			// 
+			this.buttonStartStopFirestore.BackColor = System.Drawing.Color.LightGreen;
+			this.buttonStartStopFirestore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.buttonStartStopFirestore.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.buttonStartStopFirestore.Location = new System.Drawing.Point(6, 6);
+			this.buttonStartStopFirestore.Name = "buttonStartStopFirestore";
+			this.buttonStartStopFirestore.Size = new System.Drawing.Size(150, 32);
+			this.buttonStartStopFirestore.TabIndex = 9;
+			this.buttonStartStopFirestore.Text = "Start";
+			this.buttonStartStopFirestore.UseVisualStyleBackColor = false;
+			this.buttonStartStopFirestore.Click += new System.EventHandler(this.buttonStartStopFirestore_Click);
+			// 
+			// flowLayoutPanelRulesFirestore
+			// 
+			this.flowLayoutPanelRulesFirestore.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.flowLayoutPanelRulesFirestore.AutoScroll = true;
+			this.flowLayoutPanelRulesFirestore.BackColor = System.Drawing.Color.SeaGreen;
+			this.flowLayoutPanelRulesFirestore.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.flowLayoutPanelRulesFirestore.Location = new System.Drawing.Point(6, 44);
+			this.flowLayoutPanelRulesFirestore.Name = "flowLayoutPanelRulesFirestore";
+			this.flowLayoutPanelRulesFirestore.Size = new System.Drawing.Size(824, 457);
+			this.flowLayoutPanelRulesFirestore.TabIndex = 9;
 			// 
 			// FormMain
 			// 
@@ -268,7 +326,8 @@
 			this.tabControlMain.ResumeLayout(false);
 			this.tabPageClient.ResumeLayout(false);
 			this.tabPageClient.PerformLayout();
-			this.tabPageRules.ResumeLayout(false);
+			this.tabPageRulesFirebase.ResumeLayout(false);
+			this.tabPageRulesFirestore.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -285,12 +344,16 @@
 		private System.Windows.Forms.TextBox textBoxMessage;
 		private System.Windows.Forms.TabControl tabControlMain;
 		private System.Windows.Forms.TabPage tabPageClient;
-		private System.Windows.Forms.TabPage tabPageRules;
-		private System.Windows.Forms.Button buttonStartStop;
-		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelRules;
-		private System.Windows.Forms.Button buttonAddRule;
+		private System.Windows.Forms.TabPage tabPageRulesFirebase;
+		private System.Windows.Forms.Button buttonStartStopFirebase;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelRulesFirebase;
+		private System.Windows.Forms.Button buttonAddRuleFirebase;
 		private System.Windows.Forms.Label labelMessage;
 		private System.Windows.Forms.Label labelTopic;
+		private System.Windows.Forms.TabPage tabPageRulesFirestore;
+		private System.Windows.Forms.Button buttonAddRuleFirestore;
+		private System.Windows.Forms.Button buttonStartStopFirestore;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelRulesFirestore;
 	}
 }
 
