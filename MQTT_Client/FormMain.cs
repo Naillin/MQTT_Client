@@ -1,4 +1,5 @@
-﻿using IniParser;
+﻿using Google.Protobuf.WellKnownTypes;
+using IniParser;
 using IniParser.Model;
 using MQTT_Client.FormElements;
 using Newtonsoft.Json;
@@ -299,6 +300,9 @@ namespace MQTT_Client
 					{
 						firestoreService.OnMessage += (senderFirestore, eFirestore) =>
 						{
+							string postString = Properties.Resources.notification_string + $"Firebase path: [{eFirestore.Path.SourcePath}] Message: [{eFirestore.Data.ToString()}]";
+							AddDataToText(postString);
+
 							List<RuleControl> rules;
 							lock (ruleControlsFirestore)
 							{
