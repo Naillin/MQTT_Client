@@ -6,15 +6,16 @@ MQTT_client is an application that allows you to connect to MQTT brokers, subscr
 
 ## Installation and Setup
 
-1. After the first launch, the program will create a `config.ini` file in the root directory.
-2. In the `config.ini` file, you need to specify the following data:
+1. First, you need to obtain a secret key if you plan to use Firebase. If you intend to use Firestore, you must obtain a `.json` file from the Firebase Admin SDK and enable the Cloud Firestore API for your project. You can use both databases simultaneously if needed.
+2. After the first launch, the program will create a `config.ini` file in the root directory.
+3. In the `config.ini` file, you need to specify the following data:
    - Your MQTT broker details (address, port).
    - Login and password for connecting to the MQTT broker.
    - Firebase database URL.
    - Secret key for connecting to Firebase.
    - Project identifier.
    - Path to the Firebase Admin SDK JSON file.
-3. After configuring `config.ini`, restart the application.
+4. After configuring `config.ini`, restart the application.
 
 ## Main Features
 

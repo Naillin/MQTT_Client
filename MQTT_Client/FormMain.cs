@@ -150,7 +150,7 @@ namespace MQTT_Client
 
 		private FirestoreService firestoreService = null;
 		private MqttBrokerClient mqttReciverClientFirestore = null;
-		private Dictionary<string, string> subscriptionsFirestore = new Dictionary<string, string>();
+		//private Dictionary<string, string> subscriptionsFirestore = new Dictionary<string, string>();
 		private void FormMain_Load(object sender, EventArgs e)
 		{
 			textBuffer = textBuffer + Properties.Resources.connecting_string + Environment.NewLine;
@@ -170,9 +170,10 @@ namespace MQTT_Client
 					AddDataToText(postString);
 				};
 
-				//MQTTReciverFirebase
-				Task.Run(() =>
+				
+				if (!string.IsNullOrEmpty(URL_FIREBASE) && !string.IsNullOrEmpty(SECRET_FIREBASE))
 				{
+					//MQTTReciverFirebase
 					mqttReciverClientFirebase = new MqttBrokerClient(ADDRESS, PORT, LOGIN, PASSWORD);
 					mqttReciverClientFirebase.Connect();
 					AddDataToText(Properties.Resources.ready_mqtt_firebase);
@@ -191,11 +192,8 @@ namespace MQTT_Client
 						if (rule != null)
 							await firebaseService.UpdateDataAsync<string>(rule.FirebaseReference, eMQTT.Payload);
 					};
-				});
 
-				//Firebase
-				if (!string.IsNullOrEmpty(URL_FIREBASE) && !string.IsNullOrEmpty(SECRET_FIREBASE))
-				{
+					//Firebase
 					firebaseService = new FirebaseService(URL_FIREBASE, SECRET_FIREBASE);
 					Task.Run(async () =>
 					{
@@ -217,7 +215,7 @@ namespace MQTT_Client
 										AddDataToText(postString);
 
 										subscriptionsFirebase[rule.FirebaseReference] = firebaseData;
-										mqttBrokerClient.Publish(rule.MQTT_topic, firebaseData);
+										mqttReciverClientFirebase.Publish(rule.MQTT_topic, firebaseData);
 									}
 								}
 
@@ -226,10 +224,14 @@ namespace MQTT_Client
 						}
 					});
 				}
-
-				//MQTTReciverFirestore
-				Task.Run(() =>
+				else
 				{
+					buttonAddRuleFirebase.Enabled = false;
+				}
+
+				if (!string.IsNullOrEmpty(ID_FIRESTORE) && !string.IsNullOrEmpty(PATH_FIRESTORE))
+				{
+					//MQTTReciverFirestore
 					mqttReciverClientFirestore = new MqttBrokerClient(ADDRESS, PORT, LOGIN, PASSWORD);
 					mqttReciverClientFirestore.Connect();
 					AddDataToText(Properties.Resources.ready_mqtt_firestore);
@@ -255,65 +257,28 @@ namespace MQTT_Client
 							await firestoreService.UpdateDataAsync(path, updates);
 						}
 					};
-				});
 
-				////Firestore
-				//if (!string.IsNullOrEmpty(ID_FIRESTORE) && !string.IsNullOrEmpty(PATH_FIRESTORE))
-				//{
-				//	firestoreService = new FirestoreService(ID_FIRESTORE, PATH_FIRESTORE);
-				//	Task.Run(async () =>
-				//	{
-				//		while (true && !disconnect)
-				//		{
-				//			if (switcherFirestore)
-				//			{
-				//				List<RuleControl> rules;
-				//				lock (ruleControlsFirestore)
-				//				{
-				//					rules = ruleControlsFirestore.Where(r => r.Direction == false).ToList(); // Создаём копию списка
-				//				}
-				//				foreach (RuleControl rule in rules)
-				//				{
-				//					FirestorePath path = new FirestorePath(rule.FirebaseReference);
-				//					string firestoreData = await firestoreService.GetFieldAsync<string>(path);
-				//					if (!subscriptionsFirestore.TryGetValue(rule.FirebaseReference, out string oldValue) || oldValue != firestoreData)
-				//					{
-				//						string postString = Properties.Resources.notification_string + $"Firestore path: [{rule.FirebaseReference}] Message: [{firestoreData}]";
-				//						AddDataToText(postString);
-
-				//						subscriptionsFirestore[rule.FirebaseReference] = firestoreData;
-				//						mqttBrokerClient.Publish(rule.MQTT_topic, firestoreData);
-				//					}
-				//				}
-
-				//				await Task.Delay(3000);
-				//			}
-				//		}
-				//	});
-				//}
-
-				//Firestore
-				if (!string.IsNullOrEmpty(ID_FIRESTORE) && !string.IsNullOrEmpty(PATH_FIRESTORE))
-				{
+					//Firestore
 					firestoreService = new FirestoreService(ID_FIRESTORE, PATH_FIRESTORE);
-					Task.Run(() =>
+					firestoreService.OnMessage += (senderFirestore, eFirestore) =>
 					{
-						firestoreService.OnMessage += (senderFirestore, eFirestore) =>
+						string postString = Properties.Resources.notification_string + $"Firestore path: [{eFirestore.Path.SourcePath}] Message: [{eFirestore.Data.ToString()}]";
+						AddDataToText(postString);
+
+						List<RuleControl> rules;
+						lock (ruleControlsFirestore)
 						{
-							string postString = Properties.Resources.notification_string + $"Firebase path: [{eFirestore.Path.SourcePath}] Message: [{eFirestore.Data.ToString()}]";
-							AddDataToText(postString);
+							rules = ruleControlsFirestore.Where(r => r.Direction == false).ToList(); // Создаём копию списка
+						}
+						RuleControl rule = rules.FirstOrDefault(r => r.FirebaseReference == eFirestore.Path.SourcePath);
 
-							List<RuleControl> rules;
-							lock (ruleControlsFirestore)
-							{
-								rules = ruleControlsFirestore.Where(r => r.Direction == false).ToList(); // Создаём копию списка
-							}
-							RuleControl rule = rules.FirstOrDefault(r => r.FirebaseReference == eFirestore.Path.SourcePath);
-
-							if (rule != null)
-								mqttBrokerClient.Publish(rule.MQTT_topic, eFirestore.Data.ToString());
-						};
-					});
+						if (rule != null)
+							mqttReciverClientFirestore.Publish(rule.MQTT_topic, eFirestore.Data.ToString());
+					};
+				}
+				else
+				{
+					buttonAddRuleFirestore.Enabled = false;
 				}
 
 				Task.Run(() => CheckConnection());
@@ -483,8 +448,10 @@ namespace MQTT_Client
 
 				disconnect = true;
 				mqttBrokerClient.Disconnect();
-				mqttReciverClientFirebase.Disconnect();
-				mqttReciverClientFirestore.Disconnect();
+				if (mqttReciverClientFirebase != null && mqttReciverClientFirebase.IsConnected())
+					mqttReciverClientFirebase.Disconnect();
+				if (mqttReciverClientFirestore != null && mqttReciverClientFirestore.IsConnected())
+					mqttReciverClientFirestore.Disconnect();
 				Thread.Sleep(3000);
 			}
 			catch (Exception ex)
