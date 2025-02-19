@@ -448,6 +448,12 @@ namespace MQTT_Client
 
 				disconnect = true;
 				mqttBrokerClient.Disconnect();
+
+				if (switcherFirebase)
+					buttonStartStopFirebase_Click(sender, e);
+				if (switcherFirestore)
+					buttonStartStopFirestore_Click(sender, e);
+
 				if (mqttReciverClientFirebase != null && mqttReciverClientFirebase.IsConnected())
 					mqttReciverClientFirebase.Disconnect();
 				if (mqttReciverClientFirestore != null && mqttReciverClientFirestore.IsConnected())
