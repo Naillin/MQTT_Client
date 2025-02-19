@@ -1,5 +1,8 @@
 # Приложение MQTT Client
 
+[English version](README.md)
+[Linux](https://github.com/Naillin/MQTT_Rules.git)
+
 MQTT_client — это приложение, которое позволяет подключаться к MQTT-брокерам, подписываться на топики, публиковать в них данные, а также связывать поля Firebase/Firestore с MQTT-топиками с помощью правил.
 
 ## Установка и настройка
