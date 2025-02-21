@@ -1,5 +1,6 @@
 ﻿using IniParser;
 using IniParser.Model;
+using MQTT_Client.FirebaseTools;
 using MQTT_Client.FormElements;
 using Newtonsoft.Json;
 using NLog;
@@ -9,7 +10,6 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -152,7 +152,6 @@ namespace MQTT_Client
 		private FirestoreService firestoreService = null;
 		private MqttBrokerClient mqttReciverClientFirestore = null;
 		private Dictionary<string, int> countFiledsFirestore = new Dictionary<string, int>();
-		//private Dictionary<string, string> subscriptionsFirestore = new Dictionary<string, string>();
 		private void FormMain_Load(object sender, EventArgs e)
 		{
 			textBuffer = textBuffer + Properties.Resources.connecting_string + Environment.NewLine;

@@ -166,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FirebaseTools\FirebaseService.cs" />
+    <Compile Include="FirebaseTools\FirestorePath.cs" />
     <Compile Include="FirebaseTools\FirestoreService.cs" />
     <Compile Include="FormElements\RuleControl.cs">
       <SubType>UserControl</SubType>

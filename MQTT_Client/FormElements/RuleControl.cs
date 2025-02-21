@@ -54,12 +54,6 @@ namespace MQTT_Client.FormElements
 			{
 				return checkBoxNewField.Checked;
 			}
-			//set
-			//{
-			//	checkBoxNewField.Checked = value;
-			//	if (value)
-			//		buttonSwitch.Enabled = false;
-			//}
 		}
 
 		public bool Timestamp
@@ -68,10 +62,6 @@ namespace MQTT_Client.FormElements
 			{
 				return checkBoxTimestamp.Checked;
 			}
-			//set
-			//{
-			//	checkBoxTimestamp.Checked = value;
-			//}
 		}
 
 		public RuleControl(string FirebaseReference, string MQTT_topic, bool Direction, bool NewField, bool Timestamp)

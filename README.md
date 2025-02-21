@@ -1,6 +1,7 @@
 # MQTT Client Application
 
 [Русская версия](README.ru.md)
+---
 [Linux](https://github.com/Naillin/MQTT_Rules.git)
 
 MQTT_client is an application that allows you to connect to MQTT brokers, subscribe to topics, publish data to them, and link Firebase/Firestore fields to MQTT topics using rules.
@@ -28,8 +29,10 @@ MQTT_client is an application that allows you to connect to MQTT brokers, subscr
 
 ### "Firebase Rules/Firestore Rules" Tab
 
-- **Creating Rules**: Link Firebase/Firestore database fields to MQTT topics. Rules allow automatic synchronization of data between Firebase/Firestore and MQTT. All rules are stored in the root directory in the `rulesFirebase.json`/`rulesFirestore.json` file. (Firebase field paths should start with the `/` symbol, e.g., `/switch1/data`).
-- **IMPORTANT!!!**: Rules only work with string-type fields! You cannot use paths to collections or roots in Firebase/Firestore! This may lead to errors or unexpected behavior in rule execution! Also, note that the program works with data in string representation. If you create a field with a numeric type, after rewriting this field using a rule, the field will have a string type.
+- **Rule Creation**: Link Firebase/Firestore database fields with MQTT topics. Rules allow automatic data synchronization between Firebase/Firestore and MQTT. All rules are stored in the root file `rulesFirebase.json`/`rulesFirestore.json`. (Firebase field references should start with the `/` symbol, e.g., `/switch1/data`).
+- **Creating a New Field**: For a rule, you can configure the ability to create a new field for data received from the MQTT broker. Use the `Create new field` property for this. If this option is enabled, the direction for this rule will be set towards Firebase/Firestore.
+- **Timestamp**: For a rule, you can configure the ability to add a timestamp to data sent to Firebase/Firestore. Use the `Add timestamp` property for this. This option is available only if the `Create new field` property is active.
+- **IMPORTANT!!!**: Rules only work with string-type fields! You cannot use collection paths or root paths in Firebase/Firestore for topics! This may lead to errors or unexpected behavior in rule execution! Also, note that the program works with data in string representation. If you create a field with a numeric type, after rewriting the field using a rule, the field will have a string type.
 
 ## Example Usage
 
