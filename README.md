@@ -46,3 +46,7 @@ MQTT_client is an application that allows you to connect to MQTT brokers, subscr
 ## License
 
 MIT License.
+
+## Donate
+
+https://boosty.to/naillin/donate
