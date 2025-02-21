@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace MQTT_Client.FormElements
@@ -43,19 +42,58 @@ namespace MQTT_Client.FormElements
 			{
 				_direction = value;
 				if (value)
-					buttonSwitch.Text = "<";
+					buttonSwitch.Text = "<<";
 				else
-					buttonSwitch.Text = ">";
+					buttonSwitch.Text = ">>";
 			}
 		}
 
-		public RuleControl(string FirebaseReference, string MQTT_topic, bool Direction)
+		public bool NewField
+		{
+			get
+			{
+				return checkBoxNewField.Checked;
+			}
+			//set
+			//{
+			//	checkBoxNewField.Checked = value;
+			//	if (value)
+			//		buttonSwitch.Enabled = false;
+			//}
+		}
+
+		public bool Timestamp
+		{
+			get
+			{
+				return checkBoxTimestamp.Checked;
+			}
+			//set
+			//{
+			//	checkBoxTimestamp.Checked = value;
+			//}
+		}
+
+		public RuleControl(string FirebaseReference, string MQTT_topic, bool Direction, bool NewField, bool Timestamp)
 		{
 			InitializeComponent();
 
 			this.FirebaseReference = FirebaseReference;
 			this.MQTT_topic = MQTT_topic;
 			this.Direction = Direction;
+
+			checkBoxNewField.Checked = NewField;
+			if (NewField)
+			{
+				checkBoxTimestamp.Enabled = true;
+				buttonSwitch.Enabled = false;
+			}
+			else
+			{
+				checkBoxTimestamp.Enabled = false;
+			}
+				
+			checkBoxTimestamp.Checked = Timestamp;
 		}
 
 		public event EventHandler ButtonDeleteClicked;
@@ -77,6 +115,29 @@ namespace MQTT_Client.FormElements
 		private void textBoxMQTTtopic_TextChanged(object sender, EventArgs e)
 		{
 			_MQTT_topic = textBoxMQTTtopic.Text;
+		}
+
+		private void checkBoxNewField_CheckedChanged(object sender, EventArgs e)
+		{
+			if (checkBoxNewField.Checked)
+			{
+				buttonSwitch.Enabled = false;
+				checkBoxTimestamp.Enabled = true;
+
+				Direction = true;
+			}
+			else
+			{
+				buttonSwitch.Enabled = true;
+				checkBoxTimestamp.Enabled = false;
+
+				checkBoxTimestamp.Checked = false;
+			}
+		}
+
+		private void checkBoxTimestamp_CheckedChanged(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

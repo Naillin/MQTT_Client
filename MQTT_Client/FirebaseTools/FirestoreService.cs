@@ -6,7 +6,9 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 internal class FirestoreService
 {
@@ -43,7 +45,7 @@ internal class FirestoreService
 	{
 		var collectionRef = _firestoreDb.Collection(path.Path);
 		var documentRef = collectionRef.Document(path.Document);
-		await documentRef.SetAsync(data);
+		await documentRef.SetAsync(data, SetOptions.MergeAll);
 	}
 
 	// Получение данных из документа
@@ -86,8 +88,15 @@ internal class FirestoreService
 	// Обновление данных в документе
 	public async Task UpdateDataAsync(FirestorePath path, Dictionary<string, object> updates)
 	{
-		var documentRef = _firestoreDb.Collection(path.Path).Document(path.Document);
-		await documentRef.UpdateAsync(updates);
+		try
+		{
+			var documentRef = _firestoreDb.Collection(path.Path).Document(path.Document);
+			await documentRef.UpdateAsync(updates);
+		}
+		catch (Exception ex)
+		{
+			logger.Error($"Error {ex.Message}");
+		}
 	}
 
 	// Удаление документа
@@ -95,6 +104,91 @@ internal class FirestoreService
 	{
 		var documentRef = _firestoreDb.Collection(path.Path).Document(path.Document);
 		await documentRef.DeleteAsync();
+	}
+
+	public async Task<string> ConvertFieldToCollectionAsync<T>(FirestorePath path)
+	{
+		try
+		{
+			// Генерируем уникальное имя для документа (например, используя GUID)
+			string documentName = Guid.NewGuid().ToString("N"); // Уникальное имя документа
+
+			// Создаем новый объект (документ внутри коллекции)
+			var newDocument = new Dictionary<string, object>
+		{
+			{ "count", "0" } // Добавляем поле count
+        };
+
+			// Записываем новый объект в Firebase по пути path.Path/path.Document/path.Field/documentName
+			var documentReference = _firestoreDb
+				.Collection(path.Path) // Путь к коллекции
+				.Document(path.Document) // Имя документа
+				.Collection(path.Field) // Поле, которое станет коллекцией
+				.Document(documentName); // Уникальное имя документа
+
+			await documentReference.SetAsync(newDocument); // Записываем данные
+
+			// Удаляем исходное поле из документа
+			var parentDocumentReference = _firestoreDb
+				.Collection(path.Path) // Путь к коллекции
+				.Document(path.Document); // Имя документа
+
+			await parentDocumentReference.UpdateAsync(new Dictionary<string, object>
+		{
+			{ path.Field, FieldValue.Delete } // Удаляем поле
+        });
+
+			// Возвращаем имя созданного документа
+			return documentName;
+		}
+		catch (Exception ex)
+		{
+			// Логируем ошибку, если необходимо
+			logger.Error($"Exception: {ex.Message}");
+			throw; // Пробрасываем исключение дальше
+		}
+	}
+
+	public async Task<int> AddCountFieldToDocumentAsync(FirestorePath path)
+	{
+		try
+		{
+			// Получаем ссылку на документ по указанному пути
+			var documentReference = _firestoreDb
+				.Collection(path.Path) // Путь к коллекции
+				.Document(path.Document); // Имя документа
+
+			// Получаем снимок документа
+			var documentSnapshot = await documentReference.GetSnapshotAsync();
+
+			// Если документ существует
+			if (documentSnapshot.Exists)
+			{
+				// Получаем данные документа в виде словаря
+				var data = documentSnapshot.ToDictionary();
+
+				// Считаем количество полей (исключая поле "count", если оно уже есть)
+				int result = data.Keys.Count(k => k != "count");
+
+				// Добавляем или обновляем поле "count" с количеством полей
+				data["count"] = result.ToString();
+
+				// Обновляем документ в Firestore
+				await documentReference.SetAsync(data, SetOptions.MergeAll);
+
+				return result;
+			}
+			else
+			{
+				throw new Exception("Документ не найден по указанному пути.");
+			}
+		}
+		catch (Exception ex)
+		{
+			// Логируем ошибку, если необходимо
+			logger.Error($"Exception: {ex.Message}");
+			throw; // Пробрасываем исключение дальше
+		}
 	}
 
 	// Метод для добавления подписки на изменения документа
@@ -186,12 +280,28 @@ public class FirestorePath
 	private string _document = string.Empty;
 	private string _field = string.Empty;
 
-	public string SourcePath => _sourcePath;
-	public string Path => _path;
-	public string Document => _document;
-	public string Field => _field;
+	public string SourcePath
+	{
+		get { return _sourcePath; }
+		set { _sourcePath = value; }
+	}
+	public string Path
+	{
+		get { return _path; }
+		set { _path = value; }
+	}
+	public string Document
+	{
+		get { return _document; }
+		set { _document = value; }
+	}
+	public string Field
+	{
+		get { return _field; }
+		set { _field = value; }
+	}
 
-	public FirestorePath(string path)
+	public FirestorePath(string path = "")
 	{
 		_sourcePath = path;
 
@@ -242,5 +352,85 @@ public class FirestorePath
 			_document = string.Empty;
 			_field = string.Empty;
 		}
+	}
+
+	public string GetPathWithDocument()
+	{
+		var result = new List<string>();
+
+		if (!string.IsNullOrEmpty(_path))
+			result.Add(_path);
+
+		if (!string.IsNullOrEmpty(_document))
+			result.Add(_document);
+
+		return string.Join("/", result);
+	}
+
+	// Метод для смещения значений
+	public FirestorePath Shift(bool accept = false)
+	{
+		// Разделяем путь на части
+		string[] pathParts = _sourcePath.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+		if (pathParts.Length <= 2)
+		{
+			return this;
+		}
+
+		if (accept)
+		{
+			// Сохраняем текущее значение Document
+			string previousDocument = _document;
+
+			// Document принимает значение Field
+			_document = _field;
+
+			// Field становится пустым
+			_field = string.Empty;
+
+			// Path получает к себе прошлое значение Document через символ /
+			if (!string.IsNullOrEmpty(previousDocument))
+			{
+				if (!string.IsNullOrEmpty(_path))
+				{
+					_path += "/" + previousDocument;
+				}
+				else
+				{
+					_path = previousDocument;
+				}
+			}
+
+			return this;
+		}
+		else
+		{
+			return new FirestorePath(this.ToString()).Shift(true);
+		}
+	}
+
+	public bool IsOdd()
+	{
+		// Разделяем путь на части
+		string[] pathParts = _sourcePath.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+		// Проверяем, является ли количество элементов нечетным
+		return pathParts.Length % 2 != 0;
+	}
+
+	public override string ToString()
+	{
+		var result = new List<string>();
+
+		if (!string.IsNullOrEmpty(_path))
+			result.Add(_path);
+
+		if (!string.IsNullOrEmpty(_document))
+			result.Add(_document);
+
+		if (!string.IsNullOrEmpty(_field))
+			result.Add(_field);
+
+		return string.Join("/", result);
 	}
 }

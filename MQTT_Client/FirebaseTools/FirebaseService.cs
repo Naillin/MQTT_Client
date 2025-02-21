@@ -1,5 +1,6 @@
 ﻿using Firebase.Database;
 using Firebase.Database.Query;
+using Newtonsoft.Json.Linq;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -72,6 +73,83 @@ namespace MQTT_Client
 				.OnceAsync<T>();
 
 			return data.Select(item => item.Object).ToList();
+		}
+
+		public async Task<bool> IsNodeACollectionAsync(string path)
+		{
+			try
+			{
+				// Получаем данные по указанному пути как JToken
+				var data = await _firebase
+					.Child(path)
+					.OnceSingleAsync<JToken>();
+
+				// Проверяем, является ли data объектом (JObject)
+				if (data != null && data.Type == JTokenType.Object)
+				{
+					return true; // Это коллекция (объект)
+				}
+				else
+				{
+					return false; // Это поле с данными (примитив)
+				}
+			}
+			catch (FirebaseException ex)
+			{
+				// Логируем ошибку, если необходимо
+				logger.Error($"FirebaseException: {ex.Message}");
+				return false; // В случае ошибки считаем, что это не коллекция
+			}
+		}
+
+		public async Task ConvertFieldToCollectionAsync<T>(string path)
+		{
+			// Получаем текущее значение поля
+			var currentValue = await _firebase
+				.Child(path)
+				.OnceSingleAsync<T>();
+
+			// Создаем новый объект (коллекцию)
+			var newCollection = new Dictionary<string, object>
+			{
+				{ "count", "0" }            // Добавляем поле count
+			};
+
+			// Записываем новый объект обратно в Firebase
+			await _firebase
+				.Child(path)
+				.PutAsync(newCollection);
+		}
+
+		public async Task<int> AddCountFieldToCollectionAsync(string path)
+		{
+			int result = 0;
+
+			// Получаем текущую коллекцию по указанному пути
+			var collection = await _firebase
+				.Child(path)
+				.OnceSingleAsync<Dictionary<string, object>>();
+
+			// Если коллекция существует
+			if (collection != null)
+			{
+				// Считаем количество полей (исключая поле "count", если оно уже есть)
+				result = collection.Keys.Count(k => k != "count");
+
+				// Добавляем или обновляем поле "count" с количеством полей
+				collection["count"] = result.ToString();
+
+				// Записываем обновленную коллекцию обратно в Firebase
+				await _firebase
+					.Child(path)
+					.PutAsync(collection);
+
+				return result;
+			}
+			else
+			{
+				throw new Exception("Коллекция не найдена по указанному пути.");
+			}
 		}
 
 		// Подписка на изменения в данных

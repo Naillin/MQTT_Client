@@ -2,7 +2,6 @@
 using System.Text;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using uPLibrary.Networking.M2Mqtt;
-using System.Net;
 using NLog;
 
 namespace MQTT_Client

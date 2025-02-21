@@ -34,6 +34,8 @@
 			this.labelFirebaseReference = new System.Windows.Forms.Label();
 			this.labelMQTTtopic = new System.Windows.Forms.Label();
 			this.buttonDelete = new System.Windows.Forms.Button();
+			this.checkBoxNewField = new System.Windows.Forms.CheckBox();
+			this.checkBoxTimestamp = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// textBoxFirebaseReference
@@ -66,7 +68,7 @@
 			this.buttonSwitch.Name = "buttonSwitch";
 			this.buttonSwitch.Size = new System.Drawing.Size(100, 25);
 			this.buttonSwitch.TabIndex = 2;
-			this.buttonSwitch.Text = ">";
+			this.buttonSwitch.Text = ">>";
 			this.buttonSwitch.UseVisualStyleBackColor = false;
 			this.buttonSwitch.Click += new System.EventHandler(this.buttonSwitch_Click);
 			// 
@@ -97,19 +99,45 @@
 			this.buttonDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.buttonDelete.Font = new System.Drawing.Font("Franklin Gothic Demi", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.buttonDelete.ForeColor = System.Drawing.Color.White;
-			this.buttonDelete.Location = new System.Drawing.Point(359, 3);
+			this.buttonDelete.Location = new System.Drawing.Point(793, 0);
 			this.buttonDelete.Name = "buttonDelete";
-			this.buttonDelete.Size = new System.Drawing.Size(100, 25);
+			this.buttonDelete.Size = new System.Drawing.Size(25, 25);
 			this.buttonDelete.TabIndex = 5;
 			this.buttonDelete.Text = "X";
 			this.buttonDelete.UseVisualStyleBackColor = false;
 			this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
+			// 
+			// checkBoxNewField
+			// 
+			this.checkBoxNewField.AutoSize = true;
+			this.checkBoxNewField.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Italic);
+			this.checkBoxNewField.Location = new System.Drawing.Point(648, 0);
+			this.checkBoxNewField.Name = "checkBoxNewField";
+			this.checkBoxNewField.Size = new System.Drawing.Size(139, 25);
+			this.checkBoxNewField.TabIndex = 6;
+			this.checkBoxNewField.Text = "Create new field";
+			this.checkBoxNewField.UseVisualStyleBackColor = true;
+			this.checkBoxNewField.CheckedChanged += new System.EventHandler(this.checkBoxNewField_CheckedChanged);
+			// 
+			// checkBoxTimestamp
+			// 
+			this.checkBoxTimestamp.AutoSize = true;
+			this.checkBoxTimestamp.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Italic);
+			this.checkBoxTimestamp.Location = new System.Drawing.Point(509, 0);
+			this.checkBoxTimestamp.Name = "checkBoxTimestamp";
+			this.checkBoxTimestamp.Size = new System.Drawing.Size(133, 25);
+			this.checkBoxTimestamp.TabIndex = 7;
+			this.checkBoxTimestamp.Text = "Add timestamp";
+			this.checkBoxTimestamp.UseVisualStyleBackColor = true;
+			this.checkBoxTimestamp.CheckedChanged += new System.EventHandler(this.checkBoxTimestamp_CheckedChanged);
 			// 
 			// RuleControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.PapayaWhip;
+			this.Controls.Add(this.checkBoxTimestamp);
+			this.Controls.Add(this.checkBoxNewField);
 			this.Controls.Add(this.buttonDelete);
 			this.Controls.Add(this.labelMQTTtopic);
 			this.Controls.Add(this.labelFirebaseReference);
@@ -131,5 +159,7 @@
 		private System.Windows.Forms.Label labelFirebaseReference;
 		private System.Windows.Forms.Label labelMQTTtopic;
 		private System.Windows.Forms.Button buttonDelete;
+		private System.Windows.Forms.CheckBox checkBoxNewField;
+		private System.Windows.Forms.CheckBox checkBoxTimestamp;
 	}
 }
