@@ -88,7 +88,7 @@ namespace MQTT_Client.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Empty message!.
+        ///   Ищет локализованную строку, похожую на Empty message.
         /// </summary>
         internal static string empty_message_string {
             get {
@@ -106,11 +106,29 @@ namespace MQTT_Client.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Firebase reference cannot be is empty.
+        /// </summary>
+        internal static string error_fb_ref {
+            get {
+                return ResourceManager.GetString("error_fb_ref", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Error!.
         /// </summary>
         internal static string error_string {
             get {
                 return ResourceManager.GetString("error_string", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Topic path cannot be is empty.
+        /// </summary>
+        internal static string error_topic_path {
+            get {
+                return ResourceManager.GetString("error_topic_path", resourceCulture);
             }
         }
         
@@ -234,6 +252,15 @@ namespace MQTT_Client.Properties {
         internal static string topic_adding_string {
             get {
                 return ResourceManager.GetString("topic_adding_string", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The topic is not selected.
+        /// </summary>
+        internal static string topic_not_selected {
+            get {
+                return ResourceManager.GetString("topic_not_selected", resourceCulture);
             }
         }
         

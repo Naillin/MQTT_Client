@@ -23,8 +23,13 @@ namespace MQTT_Client
 		public string InputText { get; private set; } // Свойство для хранения введенного текста
 		private void buttonInput_Click(object sender, EventArgs e)
 		{
-			InputText = textBoxInput.Text;		// Сохраняем текст из текстового поля
-			DialogResult = DialogResult.OK;     // Устанавливаем результат диалога
+			string result = textBoxInput.Text; // Сохраняем текст из текстового поля
+			if (!string.IsNullOrEmpty(result))
+			{
+				InputText = textBoxInput.Text;
+				DialogResult = DialogResult.OK;     // Устанавливаем результат диалога
+			}
+			
 			Close();                            // Закрываем форму
 		}
 	}

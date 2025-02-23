@@ -127,13 +127,19 @@
     <value>Disconnecting from MQTT</value>
   </data>
   <data name="empty_message_string" xml:space="preserve">
-    <value>Empty message!</value>
+    <value>Empty message</value>
   </data>
   <data name="enter_topic_name_string" xml:space="preserve">
     <value>Enter the topic name</value>
   </data>
+  <data name="error_fb_ref" xml:space="preserve">
+    <value>Firebase reference cannot be is empty</value>
+  </data>
   <data name="error_string" xml:space="preserve">
     <value>Error!</value>
+  </data>
+  <data name="error_topic_path" xml:space="preserve">
+    <value>Topic path cannot be is empty</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="firebase" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -174,6 +180,9 @@
   </data>
   <data name="topic_adding_string" xml:space="preserve">
     <value>Topic adding</value>
+  </data>
+  <data name="topic_not_selected" xml:space="preserve">
+    <value>The topic is not selected</value>
   </data>
   <data name="topic_string" xml:space="preserve">
     <value>Topic: </value>

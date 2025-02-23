@@ -190,37 +190,42 @@ namespace MQTT_Client
 							rule = rules.FirstOrDefault(r => r.MQTT_topic == eMQTT.Topic);
 						}
 
-						if (rule != null)
+						if (rule != null && !string.IsNullOrEmpty(eMQTT.Payload))
 						{
-							string data = eMQTT.Payload;
-							if (rule.Timestamp)
+							if (string.IsNullOrEmpty(rule.FirebaseReference))
 							{
-								data = data.Split('|')[0];
-								data += $"|{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
-							}
-
-							string fbRef = rule.FirebaseReference;
-							string lastElement = fbRef.TrimEnd('/').Split('/').Last();
-							if (rule.NewField)
-							{
-								if (await firebaseService.IsNodeACollectionAsync(fbRef))
+								string data = eMQTT.Payload;
+								if (rule.Timestamp)
 								{
-									if (!countFiledsFirebase.TryGetValue(fbRef, out int count))
-										countFiledsFirebase[fbRef] = await firebaseService.AddCountFieldToCollectionAsync(fbRef);
-									countFiledsFirebase[fbRef]++;
+									data = data.Split('|')[0];
+									data += $"|{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
+								}
+
+								string fbRef = rule.FirebaseReference;
+								string lastElement = fbRef.TrimEnd('/').Split('/').Last();
+								if (rule.NewField)
+								{
+									if (await firebaseService.IsNodeACollectionAsync(fbRef))
+									{
+										if (!countFiledsFirebase.TryGetValue(fbRef, out int count))
+											countFiledsFirebase[fbRef] = await firebaseService.AddCountFieldToCollectionAsync(fbRef);
+										countFiledsFirebase[fbRef]++;
+									}
+									else
+									{
+										await firebaseService.ConvertFieldToCollectionAsync<string>(fbRef);
+										countFiledsFirebase[fbRef] = 1;
+									}
+
+									int number = Math.Max(0, countFiledsFirebase[fbRef] - 1);
+									await firebaseService.UpdateDataAsync<string>($"{fbRef}/{lastElement}-{number}", data);
+									await firebaseService.UpdateDataAsync<string>($"{fbRef}/count", countFiledsFirebase[fbRef].ToString());
 								}
 								else
-								{
-									await firebaseService.ConvertFieldToCollectionAsync<string>(fbRef);
-									countFiledsFirebase[fbRef] = 1;
-								}
-
-								int number = Math.Max(0, countFiledsFirebase[fbRef] - 1);
-								await firebaseService.UpdateDataAsync<string>($"{fbRef}/{lastElement}-{number}", data);
-								await firebaseService.UpdateDataAsync<string>($"{fbRef}/count", countFiledsFirebase[fbRef].ToString());
+									await firebaseService.UpdateDataAsync<string>(fbRef, data);
 							}
 							else
-								await firebaseService.UpdateDataAsync<string>(fbRef, data);
+								MessageBox.Show(Properties.Resources.error_fb_ref, Properties.Resources.error_string);
 						}
 					};
 
@@ -239,14 +244,25 @@ namespace MQTT_Client
 								}
 								foreach (RuleControl rule in rules)
 								{
-									string firebaseData = await firebaseService.GetDataAsync<string>(rule.FirebaseReference);
-									if (!subscriptionsFirebase.TryGetValue(rule.FirebaseReference, out string oldValue) || oldValue != firebaseData)
+									if (rule != null)
 									{
-										string postString = Properties.Resources.notification_string + $"Firebase path: [{rule.FirebaseReference}] Message: [{firebaseData}]";
-										AddDataToText(postString);
+										if (!string.IsNullOrEmpty(rule.MQTT_topic))
+										{
+											string firebaseData = await firebaseService.GetDataAsync<string>(rule.FirebaseReference);
+											if (!string.IsNullOrEmpty(firebaseData))
+											{
+												if (!subscriptionsFirebase.TryGetValue(rule.FirebaseReference, out string oldValue) || oldValue != firebaseData)
+												{
+													string postString = Properties.Resources.notification_string + $"Firebase path: [{rule.FirebaseReference}] Message: [{firebaseData}]";
+													AddDataToText(postString);
 
-										subscriptionsFirebase[rule.FirebaseReference] = firebaseData;
-										mqttReciverClientFirebase.Publish(rule.MQTT_topic, firebaseData);
+													subscriptionsFirebase[rule.FirebaseReference] = firebaseData;
+													mqttReciverClientFirebase.Publish(rule.MQTT_topic, firebaseData);
+												}
+											}
+										}
+										else
+											MessageBox.Show(Properties.Resources.error_topic_path, Properties.Resources.error_string);
 									}
 								}
 
@@ -278,57 +294,62 @@ namespace MQTT_Client
 							rule = rules.FirstOrDefault(r => r.MQTT_topic == eMQTT.Topic);
 						}
 
-						if (rule != null)
+						if (rule != null && !string.IsNullOrEmpty(eMQTT.Payload))
 						{
-							string data = eMQTT.Payload;
-							if (rule.Timestamp)
+							if (string.IsNullOrEmpty(rule.FirebaseReference))
 							{
-								data = data.Split('|')[0];
-								data += $"|{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
-							}
-
-							FirestorePath fsPath = new FirestorePath(rule.FirebaseReference);
-							if (rule.NewField)
-							{
-								FirestorePath fsPathNewField = new FirestorePath(rule.FirebaseReference).Shift();
-								if (!fsPath.IsOdd()) //если четный значит док или коллекция
+								string data = eMQTT.Payload;
+								if (rule.Timestamp)
 								{
-									if (!countFiledsFirestore.TryGetValue(fsPathNewField.SourcePath, out int count))
-										countFiledsFirestore[fsPathNewField.SourcePath] = await firestoreService.AddCountFieldToDocumentAsync(fsPathNewField);
-									countFiledsFirestore[fsPathNewField.SourcePath]++;
+									data = data.Split('|')[0];
+									data += $"|{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
+								}
+
+								FirestorePath fsPath = new FirestorePath(rule.FirebaseReference);
+								if (rule.NewField)
+								{
+									FirestorePath fsPathNewField = new FirestorePath(rule.FirebaseReference).Shift();
+									if (!fsPath.IsOdd()) //если четный значит док или коллекция
+									{
+										if (!countFiledsFirestore.TryGetValue(fsPathNewField.SourcePath, out int count))
+											countFiledsFirestore[fsPathNewField.SourcePath] = await firestoreService.AddCountFieldToDocumentAsync(fsPathNewField);
+										countFiledsFirestore[fsPathNewField.SourcePath]++;
+									}
+									else
+									{
+										string document = await firestoreService.ConvertFieldToCollectionAsync<string>(fsPath);
+										fsPathNewField = new FirestorePath($"{fsPathNewField.ToString()}/{document}").Shift();
+										if (rule.InvokeRequired)
+											rule.Invoke(new Action(() => { rule.FirebaseReference = fsPathNewField.ToString(); }));
+										else
+											rule.FirebaseReference = fsPathNewField.ToString();
+
+										countFiledsFirestore[rule.FirebaseReference] = 1;
+									}
+
+									int number = Math.Max(0, countFiledsFirestore[rule.FirebaseReference] - 1);
+									var updatesNewField = new Dictionary<string, object>
+									{
+										{ $"{fsPathNewField.Document}-{number}", data }
+									};
+									await firestoreService.AddDataAsync(fsPathNewField, updatesNewField);
+									var updatesCount = new Dictionary<string, object>
+									{
+										{ $"count", countFiledsFirestore[rule.FirebaseReference] }
+									};
+									await firestoreService.UpdateDataAsync(fsPathNewField, updatesCount);
 								}
 								else
 								{
-									string document = await firestoreService.ConvertFieldToCollectionAsync<string>(fsPath);
-									fsPathNewField = new FirestorePath($"{fsPathNewField.ToString()}/{document}").Shift();
-									if (rule.InvokeRequired)
-										rule.Invoke(new Action(() => { rule.FirebaseReference = fsPathNewField.ToString(); }));
-									else
-										rule.FirebaseReference = fsPathNewField.ToString();
-
-									countFiledsFirestore[rule.FirebaseReference] = 1;
+									var updates = new Dictionary<string, object>
+									{
+										{ fsPath.Field, data }
+									};
+									await firestoreService.UpdateDataAsync(fsPath, updates);
 								}
-
-								int number = Math.Max(0, countFiledsFirestore[rule.FirebaseReference] - 1);
-								var updatesNewField = new Dictionary<string, object>
-								{
-									{ $"{fsPathNewField.Document}-{number}", data }
-								};
-								await firestoreService.AddDataAsync(fsPathNewField, updatesNewField);
-								var updatesCount = new Dictionary<string, object>
-								{
-									{ $"count", countFiledsFirestore[rule.FirebaseReference] }
-								};
-								await firestoreService.UpdateDataAsync(fsPathNewField, updatesCount);
 							}
 							else
-							{
-								var updates = new Dictionary<string, object>
-								{
-									{ fsPath.Field, data }
-								};
-								await firestoreService.UpdateDataAsync(fsPath, updates);
-							}
+								MessageBox.Show(Properties.Resources.error_fb_ref, Properties.Resources.error_string);
 						}
 					};
 
@@ -336,18 +357,28 @@ namespace MQTT_Client
 					firestoreService = new FirestoreService(ID_FIRESTORE, PATH_FIRESTORE);
 					firestoreService.OnMessage += (senderFirestore, eFirestore) =>
 					{
-						string postString = Properties.Resources.notification_string + $"Firestore path: [{eFirestore.Path.SourcePath}] Message: [{eFirestore.Data.ToString()}]";
-						AddDataToText(postString);
-
-						List<RuleControl> rules;
-						lock (ruleControlsFirestore)
+						if (eFirestore.Path != null && eFirestore.Data != null && !string.IsNullOrEmpty(eFirestore.Data.ToString()))
 						{
-							rules = ruleControlsFirestore.Where(r => r.Direction == false).ToList(); // Создаём копию списка
-						}
-						RuleControl rule = rules.FirstOrDefault(r => r.FirebaseReference == eFirestore.Path.SourcePath);
+							string postString = Properties.Resources.notification_string + $"Firestore path: [{eFirestore.Path.SourcePath}] Message: [{eFirestore.Data.ToString()}]";
+							AddDataToText(postString);
 
-						if (rule != null)
-							mqttReciverClientFirestore.Publish(rule.MQTT_topic, eFirestore.Data.ToString());
+							List<RuleControl> rules;
+							lock (ruleControlsFirestore)
+							{
+								rules = ruleControlsFirestore.Where(r => r.Direction == false).ToList(); // Создаём копию списка
+							}
+							RuleControl rule = rules.FirstOrDefault(r => r.FirebaseReference == eFirestore.Path.SourcePath);
+
+							if (rule != null)
+							{
+								if (!string.IsNullOrEmpty(rule.MQTT_topic))
+								{
+									mqttReciverClientFirestore.Publish(rule.MQTT_topic, eFirestore.Data.ToString());
+								}
+								else
+									MessageBox.Show(Properties.Resources.error_topic_path, Properties.Resources.error_string);
+							}
+						}
 					};
 				}
 				else
@@ -384,7 +415,7 @@ namespace MQTT_Client
 				}
 				else
 				{
-					MessageBox.Show(Properties.Resources.empty_message_string, Properties.Resources.error_string);
+					MessageBox.Show(Properties.Resources.empty_message_string + " or " + Properties.Resources.topic_not_selected, Properties.Resources.error_string);
 				}
 			}
 			else
