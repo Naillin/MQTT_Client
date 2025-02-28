@@ -48,7 +48,7 @@ namespace MQTT_Client
 				PORT = Convert.ToInt32(data["Settings"]["PORT"]);
 				LOGIN = data["Settings"]["LOGIN"];
 				PASSWORD = data["Settings"]["PASSWORD"];
-				URL_FIREBASE = data["Settings"]["URL_FIREBASE"];
+				URL_FIREBASE = data["Settings"]["URL_FIREBASE"].Trim('/');
 				SECRET_FIREBASE = data["Settings"]["SECRET_FIREBASE"];
 				ID_FIRESTORE = data["Settings"]["ID_FIRESTORE"];
 				PATH_FIRESTORE = data["Settings"]["PATH_FIRESTORE"];
@@ -93,7 +93,7 @@ namespace MQTT_Client
 				{
 					foreach (RuleUnit rule in jsonRules)
 					{
-						AddRule(rule.FirebaseReference, rule.MQTT_topic, rule.Direction, rule.NewField, rule.Timestamp);
+						AddRule(rule.FirebaseReference.Trim('/'), rule.MQTT_topic.Trim('/'), rule.Direction, rule.NewField, rule.Timestamp);
 					}
 				}
 			}
@@ -192,7 +192,7 @@ namespace MQTT_Client
 
 						if (rule != null && !string.IsNullOrEmpty(eMQTT.Payload))
 						{
-							if (string.IsNullOrEmpty(rule.FirebaseReference))
+							if (!string.IsNullOrEmpty(rule.FirebaseReference))
 							{
 								string data = eMQTT.Payload;
 								if (rule.Timestamp)
@@ -296,7 +296,7 @@ namespace MQTT_Client
 
 						if (rule != null && !string.IsNullOrEmpty(eMQTT.Payload))
 						{
-							if (string.IsNullOrEmpty(rule.FirebaseReference))
+							if (!string.IsNullOrEmpty(rule.FirebaseReference))
 							{
 								string data = eMQTT.Payload;
 								if (rule.Timestamp)
@@ -678,6 +678,9 @@ namespace MQTT_Client
 
 					foreach (RuleControl rule in ruleControlsFirebase)
 					{
+						rule.MQTT_topic = rule.MQTT_topic.Trim('/');
+						rule.FirebaseReference = rule.FirebaseReference.Trim('/');
+
 						if (rule.Direction)
 							mqttReciverClientFirebase.Subscribe(rule.MQTT_topic);
 
@@ -757,6 +760,9 @@ namespace MQTT_Client
 
 					foreach (RuleControl rule in ruleControlsFirestore)
 					{
+						rule.MQTT_topic = rule.MQTT_topic.Trim('/');
+						rule.FirebaseReference = rule.FirebaseReference.Trim('/');
+
 						if (rule.Direction)
 							mqttReciverClientFirestore.Subscribe(rule.MQTT_topic);
 						else
